@@ -10,6 +10,7 @@ import {
 import { DASHBOARD_APP_PATHS, DASHBOARD_APP_ROUTES } from 'apps/dashboard/routes/routes';
 import { EXPERIMENTAL_APP_ROUTES } from 'apps/experimental/routes/routes';
 import { STABLE_APP_ROUTES } from 'apps/stable/routes/routes';
+import { STREAMBERRY_APP_ROUTES } from 'apps/streamberry/routes';
 import { WIZARD_APP_ROUTES } from 'apps/wizard/routes/routes';
 import AppHeader from 'components/AppHeader';
 import Backdrop from 'components/Backdrop';
@@ -22,13 +23,20 @@ import appTheme from 'themes';
 import { ThemeStorageManager } from 'themes/themeStorageManager';
 
 const layoutMode = browser.tv ? LayoutMode.Tv : localStorage.getItem(LAYOUT_SETTING_KEY);
-const isExperimentalLayout = !layoutMode || layoutMode === LayoutMode.Experimental;
+const isStreamberryLayout = !layoutMode || layoutMode === LayoutMode.Streamberry;
+const isExperimentalLayout = layoutMode === LayoutMode.Experimental;
+
+function selectPrimaryAppRoutes() {
+    if (isStreamberryLayout) return STREAMBERRY_APP_ROUTES;
+    if (isExperimentalLayout) return EXPERIMENTAL_APP_ROUTES;
+    return STABLE_APP_ROUTES;
+}
 
 const router = createHashRouter([
     {
         element: <RootAppLayout />,
         children: [
-            ...(isExperimentalLayout ? EXPERIMENTAL_APP_ROUTES : STABLE_APP_ROUTES),
+            ...selectPrimaryAppRoutes(),
             ...DASHBOARD_APP_ROUTES,
             ...WIZARD_APP_ROUTES,
             {
@@ -61,7 +69,7 @@ function RootAppLayout() {
             storageManager={ThemeStorageManager}
         >
             <Backdrop />
-            <AppHeader isHidden={isExperimentalLayout || isNewLayoutPath} />
+            <AppHeader isHidden={isExperimentalLayout || isStreamberryLayout || isNewLayoutPath} />
 
             <Outlet />
         </ThemeProvider>

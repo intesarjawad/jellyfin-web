@@ -1,0 +1,7 @@
+{
+  "name": "Streamberry",
+  "tagline": "Your cinema, reimagined",
+  "logoUrl": "/branding/logo.png",
+  "accentHue": 45,
+  "classPrefix": "sb"
+}

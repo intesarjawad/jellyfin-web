@@ -5,5 +5,6 @@ export enum AppType {
     Dashboard = 'dashboard',
     Experimental = 'experimental',
     Stable = 'stable',
+    Streamberry = 'streamberry',
     Wizard = 'wizard'
 }

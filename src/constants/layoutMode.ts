@@ -8,6 +8,8 @@ export enum LayoutMode {
     Experimental = 'experimental',
     /** The legacy mobile layout. */
     Mobile = 'mobile',
+    /** The Streamberry cinematic layout. */
+    Streamberry = 'streamberry',
     /** The TV layout. */
     Tv = 'tv'
 };

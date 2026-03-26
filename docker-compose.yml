@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  jellyfin:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jellyfin
+    restart: unless-stopped
+    expose:
+      - '8096'
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=America/New_York
+      - 'JELLYFIN_PublishedServerUrl=${SERVICE_URL_JELLYFIN_8096:-http://localhost:8096}'
+    volumes:
+      - 'jellyfin-config:/config'
+      - '/mnt/riven/mount:/mount:rslave,z'
+    healthcheck:
+      test:
+        - CMD
+        - curl
+        - '-f'
+        - 'http://127.0.0.1:8096'
+      interval: 2s
+      timeout: 10s
+      retries: 15
+volumes:
+  jellyfin-config:
+    name: jellyfin-config

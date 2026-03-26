@@ -1,0 +1,1034 @@
+/* ============================================================================
+ * STREAMBERRY — Jellyfin DOM Overrides
+ * ============================================================================
+ *
+ * Maps Streamberry's design token system onto Jellyfin's actual DOM structure.
+ * Every value references a token from tokens.css — no raw values unless
+ * Jellyfin's DOM demands a structural override.
+ *
+ * These selectors cover the Jellyfin views that Streamberry may still render
+ * via ViewManagerPage (legacy routes). The Streamberry-native views (sb-*)
+ * are styled in tokens.css.
+ *
+ * Organized: Base → Header/Nav → Cards → Detail Page → Login → Library →
+ *            Player/OSD → Dialogs → Forms → Scrollbars → Responsive
+ * ========================================================================= */
+
+
+/* ---------------------------------------------------------------------------
+ * 1. BASE — Page Background, Color Scheme, Font Foundation
+ * ------------------------------------------------------------------------ */
+
+:root {
+  color-scheme: dark;
+}
+
+html {
+  font-family: var(--font-interface);
+  font-optical-sizing: auto;
+  font-weight: var(--weight-regular);
+  background-color: var(--surface-deep) !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  color: var(--text-primary);
+  background: var(--surface-deep);
+}
+
+body, h1, h2, h3, h4, h5, h6, p {
+  font-family: var(--font-interface);
+}
+
+.backgroundContainer:not(.withBackdrop):not(.backgroundContainer-transparent) {
+  background-color: var(--surface-deep) !important;
+}
+
+.backgroundContainer.withBackdrop {
+  background: linear-gradient(
+    0deg,
+    var(--surface-deep) 30%,
+    rgba(5, 5, 8, 0.5)
+  );
+}
+
+.backdropContainer {
+  background-color: var(--surface-deep);
+}
+
+.backdropImage {
+  opacity: 0.35;
+  transition: opacity var(--duration-ambient) var(--ease-ambient);
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 2. HEADER / NAVIGATION — Glass Chrome, 52px Height
+ * ------------------------------------------------------------------------ */
+
+.skinHeader,
+.skinHeader-withBackground.osdHeader {
+  background-color: transparent !important;
+  background: transparent !important;
+}
+
+.skinHeader-blurred:not(.osdHeader):not(.semiTransparent) {
+  background: var(--glass-bg-chrome) !important;
+  backdrop-filter: var(--glass-blur-chrome) !important;
+  -webkit-backdrop-filter: var(--glass-blur-chrome) !important;
+  border: none !important;
+  border-bottom: var(--glass-border-chrome) !important;
+}
+
+.skinHeader-withBackground.semiTransparent {
+  backdrop-filter: none !important;
+  background-color: transparent !important;
+  border: none !important;
+}
+
+.headerTop {
+  align-items: center;
+  height: var(--nav-height-desktop);
+  padding: 0;
+}
+
+.layout-desktop .headerTop {
+  padding: 0 var(--page-padding-desktop);
+}
+
+.layout-desktop .skinHeader,
+.layout-tv .skinHeader {
+  padding-top: 0 !important;
+}
+
+.headerTabs {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.headerRight {
+  background: transparent !important;
+  backdrop-filter: none !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+}
+
+.emby-tab-button {
+  font-family: var(--font-interface) !important;
+  font-size: var(--type-nav-link) !important;
+  font-weight: var(--weight-medium) !important;
+  letter-spacing: var(--tracking-wide) !important;
+  color: var(--text-secondary) !important;
+  background: transparent !important;
+  border-radius: var(--radius-nav-link) !important;
+  padding: 6px 14px !important;
+  transition:
+    color var(--duration-micro) var(--ease-micro),
+    background var(--duration-micro) var(--ease-micro) !important;
+}
+
+.emby-tab-button:hover {
+  color: var(--text-primary) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.emby-tab-button-active {
+  color: var(--text-primary) !important;
+  background: rgba(255, 255, 255, 0.05) !important;
+}
+
+.emby-tab-button-active > .emby-button-foreground {
+  color: var(--text-primary) !important;
+}
+
+.homeLibraryText,
+.emby-button-foreground {
+  color: inherit !important;
+}
+
+.headerRight .paper-icon-button-light:hover:not(:disabled) {
+  color: var(--text-primary) !important;
+  background-color: transparent !important;
+}
+
+.layout-desktop .pageTitleWithLogo,
+.layout-tv .pageTitleWithLogo {
+  height: var(--nav-logo-size) !important;
+  margin-left: 0 !important;
+}
+
+.sectionTitle {
+  font-family: var(--font-interface) !important;
+  font-size: var(--type-row-title) !important;
+  font-weight: var(--weight-semibold) !important;
+  letter-spacing: var(--tracking-slight) !important;
+  color: var(--text-primary) !important;
+}
+
+.sectionTitleTextButton {
+  color: var(--text-secondary) !important;
+  font-size: var(--type-metadata) !important;
+}
+
+.sectionTitleTextButton:hover {
+  color: var(--text-primary) !important;
+}
+
+.mainDrawer,
+.drawer-open {
+  background-color: var(--glass-bg-overlay) !important;
+  backdrop-filter: var(--glass-blur-overlay) !important;
+  -webkit-backdrop-filter: var(--glass-blur-overlay) !important;
+  border-right: var(--glass-border-overlay) !important;
+}
+
+.navMenuOption {
+  border-radius: var(--radius-nav-link) !important;
+  font-family: var(--font-interface) !important;
+  font-size: var(--type-nav-link) !important;
+  color: var(--text-secondary) !important;
+}
+
+.navMenuOption:hover:not(.navMenuOption-selected) {
+  background: rgba(255, 255, 255, 0.04) !important;
+  color: var(--text-primary) !important;
+}
+
+.navMenuOption-selected {
+  background: rgba(255, 255, 255, 0.06) !important;
+  color: var(--text-primary) !important;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 3. CARDS
+ * ------------------------------------------------------------------------ */
+
+.cardScalable {
+  border-radius: var(--radius-poster-card) !important;
+  border: none !important;
+  overflow: hidden !important;
+  box-shadow: var(--shadow-card-resting);
+  transition: transform var(--duration-micro) var(--ease-micro) !important;
+}
+
+.backdropCard .cardScalable,
+.overflowBackdropCard .cardScalable {
+  border-radius: var(--radius-landscape-card) !important;
+}
+
+.visualCardBox {
+  background-color: transparent !important;
+  border-radius: var(--radius-poster-card) !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.visualCardBox .cardScalable {
+  border-radius: var(--radius-poster-card) var(--radius-poster-card) 0 0 !important;
+}
+
+.cardImageContainer {
+  transition: transform var(--duration-meso) var(--ease-meso) !important;
+}
+
+.card-hoverable:hover .cardScalable {
+  transform: translateY(-6px) scale(1.02) !important;
+  box-shadow: var(--shadow-card-hover) !important;
+  border-color: transparent !important;
+}
+
+.card-hoverable:hover .cardImageContainer {
+  transform: scale(1.08) !important;
+}
+
+.card-hoverable:hover .visualCardBox {
+  border-color: transparent !important;
+}
+
+.cardOverlayContainer {
+  transition: background var(--duration-micro) var(--ease-micro) !important;
+  background: transparent !important;
+}
+
+.card-hoverable:hover .cardOverlayContainer {
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.65) 0%,
+    transparent 50%
+  ) !important;
+}
+
+.cardOverlayContainer:after {
+  content: none !important;
+}
+
+.cardOverlayContainer > .cardOverlayFab-primary {
+  background-color: var(--glass-bg-interactive) !important;
+  backdrop-filter: var(--glass-blur-interactive) !important;
+  -webkit-backdrop-filter: var(--glass-blur-interactive) !important;
+  border: var(--glass-border-interactive) !important;
+  color: var(--text-primary) !important;
+}
+
+.cardText {
+  font-family: var(--font-interface) !important;
+  font-size: var(--type-card-title) !important;
+  color: var(--text-primary) !important;
+}
+
+.cardText.cardTextCentered {
+  color: var(--text-secondary) !important;
+  font-size: var(--type-metadata) !important;
+}
+
+.cardBox:not(.visualCardBox) .cardPadder {
+  background-color: var(--surface-elevated) !important;
+}
+
+.cardImageIcon {
+  color: var(--text-ghost) !important;
+}
+
+.countIndicator {
+  background: var(--glass-bg-interactive) !important;
+  backdrop-filter: var(--glass-blur-interactive) !important;
+  -webkit-backdrop-filter: var(--glass-blur-interactive) !important;
+  border: var(--glass-border-interactive) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-interface) !important;
+  font-size: var(--type-tag) !important;
+}
+
+.playedIndicator {
+  background: oklch(0.45 0.12 145 / 0.6) !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+.itemProgressBar:not(.backgroundProgress):not(.playbackProgress):not(.transcodingProgress) {
+  height: 3px !important;
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-radius: 0 !important;
+  overflow: hidden;
+}
+
+.itemProgressBarForeground {
+  background: var(--ambient-accent) !important;
+  border-radius: 0 2px 2px 0 !important;
+}
+
+.innerCardFooter {
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.85) 0%,
+    transparent
+  ) !important;
+  padding: var(--card-inner-padding) !important;
+}
+
+.itemsContainer:not(.editorsChoiceItemsContainer) {
+  column-gap: var(--card-gap-poster);
+}
+
+.scrollX {
+  gap: var(--card-gap-poster);
+}
+
+.cardBox-bottompadded {
+  margin-bottom: 8px !important;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 4. DETAIL PAGE — "The Chamber"
+ * ------------------------------------------------------------------------ */
+
+.detailPagePrimaryContainer {
+  background: transparent !important;
+}
+
+.layout-desktop .detailPagePrimaryContainer {
+  background: transparent !important;
+}
+
+.detailPageSecondaryContainer {
+  background-color: transparent !important;
+  padding-top: 0 !important;
+}
+
+.detailRibbon {
+  background: transparent !important;
+}
+
+.layout-desktop .detailPageContent {
+  padding-left: var(--page-padding-desktop) !important;
+}
+
+.layout-mobile .detailPageContent {
+  padding-left: var(--page-padding-mobile) !important;
+  padding-right: var(--page-padding-mobile) !important;
+}
+
+.layout-desktop .detailImageContainer .card {
+  box-shadow: var(--shadow-poster-focal) !important;
+  border-radius: var(--radius-poster-card) !important;
+}
+
+.detailImageContainer .cardScalable {
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.nameContainer > h1.itemName,
+.nameContainer > h1.parentName {
+  font-family: var(--font-display) !important;
+  font-weight: var(--weight-semibold) !important;
+  letter-spacing: var(--tracking-tight) !important;
+  color: var(--text-primary) !important;
+}
+
+.layout-desktop .nameContainer > h1.itemName,
+.layout-desktop .nameContainer > h1.parentName {
+  font-size: 42px !important;
+  line-height: var(--leading-tight) !important;
+}
+
+.layout-mobile .nameContainer > h1.itemName,
+.layout-mobile .nameContainer > h1.parentName {
+  font-size: var(--type-page-title) !important;
+}
+
+.subtitle {
+  font-family: var(--font-display) !important;
+  color: var(--text-secondary) !important;
+}
+
+.tagline {
+  font-family: var(--font-display) !important;
+  font-style: italic !important;
+  font-weight: var(--weight-regular) !important;
+  color: var(--text-secondary) !important;
+  border-left: none !important;
+}
+
+.detail-clamp-text {
+  font-family: var(--font-interface) !important;
+  font-size: var(--type-synopsis) !important;
+  font-weight: var(--weight-light) !important;
+  line-height: var(--leading-loose) !important;
+  color: var(--text-secondary) !important;
+}
+
+.mediaInfoItem {
+  font-family: var(--font-interface) !important;
+  font-size: var(--type-metadata) !important;
+  color: var(--text-secondary) !important;
+  border-radius: var(--radius-tag) !important;
+}
+
+.mediaInfoOfficialRating {
+  background: transparent !important;
+  border: 1px solid var(--border-subtle) !important;
+  color: var(--text-secondary) !important;
+  font-size: var(--type-tag) !important;
+}
+
+.mainDetailButtons {
+  margin-top: 20px;
+}
+
+.btnPlay.detailButton {
+  background-color: var(--text-primary) !important;
+  color: var(--surface-deep) !important;
+  border-radius: 24px !important;
+  border: none !important;
+  font-family: var(--font-interface) !important;
+  font-weight: var(--weight-medium) !important;
+  transition:
+    background var(--duration-micro) var(--ease-micro),
+    transform var(--duration-micro) var(--ease-micro) !important;
+}
+
+.btnPlay.detailButton:hover {
+  transform: scale(1.02);
+  filter: brightness(0.9);
+}
+
+.detailButton:not(.btnPlay) {
+  color: var(--text-secondary) !important;
+  background: transparent !important;
+  border: none !important;
+  border-radius: 50% !important;
+  transition:
+    color var(--duration-micro) var(--ease-micro),
+    background var(--duration-micro) var(--ease-micro) !important;
+}
+
+.detailButton:not(.btnPlay):hover {
+  color: var(--text-primary) !important;
+  background: var(--glass-bg-interactive) !important;
+}
+
+.layout-desktop .detailSectionContent {
+  background: var(--glass-bg-panel) !important;
+  backdrop-filter: var(--glass-blur-panel) !important;
+  -webkit-backdrop-filter: var(--glass-blur-panel) !important;
+  border: var(--glass-border-panel) !important;
+  border-radius: var(--radius-glass-panel) !important;
+  padding: var(--glass-panel-padding) !important;
+}
+
+.layout-mobile .detailSectionContent {
+  background: var(--glass-bg-panel) !important;
+  border-radius: var(--radius-glass-panel) !important;
+  padding: var(--space-4) !important;
+}
+
+.itemDetailsGroup:has(.detailsGroupItem:not(.hide)) {
+  background: var(--glass-bg-panel) !important;
+  backdrop-filter: var(--glass-blur-panel) !important;
+  -webkit-backdrop-filter: var(--glass-blur-panel) !important;
+  border: var(--glass-border-panel) !important;
+  border-radius: var(--radius-glass-panel) !important;
+  padding: var(--space-4) !important;
+}
+
+.trackSelections {
+  background: var(--glass-bg-panel) !important;
+  border: var(--glass-border-panel) !important;
+  border-radius: var(--radius-glass-panel) !important;
+  padding: var(--space-4) !important;
+}
+
+#itemDetailPage .verticalSection .itemsContainer.padded-right {
+  padding-right: 0 !important;
+}
+
+#castCollapsible .cardScalable,
+#guestCastContent .cardScalable {
+  border-radius: 50% !important;
+}
+
+.itemExternalLinks.focuscontainer-x > .button-link {
+  background-color: var(--glass-bg-interactive) !important;
+  border: var(--glass-border-interactive) !important;
+  border-radius: var(--radius-pill) !important;
+  color: var(--text-secondary) !important;
+  font-size: var(--type-metadata) !important;
+  padding: 4px 10px !important;
+}
+
+.layout-desktop .itemExternalLinks.focuscontainer-x > a:hover {
+  background-color: var(--glass-bg-interactive-hover) !important;
+  color: var(--text-primary) !important;
+}
+
+.starIcon {
+  color: var(--ambient-accent) !important;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 5. LOGIN PAGE
+ * ------------------------------------------------------------------------ */
+
+#loginPage {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background:
+    radial-gradient(ellipse 60% 50% at 30% 30%, var(--login-violet), transparent 70%),
+    radial-gradient(ellipse 50% 60% at 70% 70%, var(--login-amber), transparent 70%),
+    var(--surface-deep) !important;
+  padding: var(--space-4);
+}
+
+#loginPage .padded-left.padded-right.padded-bottom-page {
+  background: var(--glass-bg-panel) !important;
+  backdrop-filter: var(--glass-blur-panel) !important;
+  -webkit-backdrop-filter: var(--glass-blur-panel) !important;
+  border: var(--glass-border-panel) !important;
+  border-radius: var(--radius-glass-panel) !important;
+  padding: var(--glass-panel-padding) !important;
+  max-width: 420px;
+}
+
+#loginPage .padded-left.padded-right.padded-bottom-page:has(.visualLoginForm:not(.hide)) {
+  max-width: 560px;
+}
+
+.manualLoginForm .sectionTitle,
+.visualLoginForm > h1 {
+  font-family: var(--font-display) !important;
+  font-size: var(--type-spotlight-title) !important;
+  font-weight: var(--weight-semibold) !important;
+  color: var(--text-primary) !important;
+  text-align: center !important;
+}
+
+#divUsers .squareCard {
+  width: 140px !important;
+}
+
+.layout-mobile #divUsers .squareCard {
+  width: 120px !important;
+}
+
+#divUsers .card-hoverable:hover .cardScalable {
+  transform: translateY(-4px) !important;
+  box-shadow:
+    var(--shadow-card-hover),
+    0 0 20px var(--login-violet) !important;
+}
+
+.manualLoginForm .emby-input {
+  background: var(--glass-bg-interactive) !important;
+  border: var(--glass-border-interactive) !important;
+  border-radius: var(--radius-input) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-interface) !important;
+  height: 44px !important;
+  padding: 0 var(--space-4) !important;
+}
+
+.manualLoginForm .emby-input:focus {
+  border-color: var(--border-active) !important;
+  box-shadow: var(--focus-ring) !important;
+  outline: none !important;
+}
+
+#loginPage .button-submit {
+  background: oklch(0.30 0.08 280 / 0.5) !important;
+  border: 1px solid oklch(0.40 0.06 280 / 0.3) !important;
+  border-radius: var(--radius-input) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-interface) !important;
+  font-weight: var(--weight-medium) !important;
+  backdrop-filter: var(--glass-blur-interactive) !important;
+  -webkit-backdrop-filter: var(--glass-blur-interactive) !important;
+  transition:
+    background var(--duration-micro) var(--ease-micro),
+    transform var(--duration-micro) var(--ease-micro) !important;
+}
+
+#loginPage .button-submit:hover {
+  background: oklch(0.35 0.08 280 / 0.6) !important;
+  transform: translateY(-1px);
+}
+
+.manualLoginForm .emby-input.input-error {
+  animation: input-shake 300ms var(--ease-micro);
+  border-color: var(--error-warm-red) !important;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 6. LIBRARY BROWSING
+ * ------------------------------------------------------------------------ */
+
+.libraryPage .layout-desktop .vertical-wrap:not(.centered),
+.layout-desktop .libraryPage .vertical-wrap:not(.centered) {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+  gap: var(--card-gap-poster) !important;
+  justify-content: start !important;
+}
+
+.layout-desktop .padded-right-withalphapicker > .vertical-wrap {
+  display: grid !important;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)) !important;
+  gap: var(--card-gap-poster) !important;
+  justify-content: start !important;
+}
+
+.libraryPage {
+  padding-left: var(--page-padding-desktop) !important;
+  padding-right: var(--page-padding-desktop) !important;
+}
+
+.sectionTabs .emby-tab-button {
+  background-color: var(--glass-bg-interactive) !important;
+  border: var(--glass-border-interactive) !important;
+  border-radius: var(--radius-pill) !important;
+  color: var(--text-secondary) !important;
+  font-family: var(--font-interface) !important;
+  font-size: var(--type-nav-link) !important;
+  height: 36px !important;
+  padding: 0 16px !important;
+}
+
+.sectionTabs .emby-tab-button-active {
+  background-color: var(--text-primary) !important;
+  color: var(--surface-deep) !important;
+}
+
+.alphaPickerButton {
+  color: var(--text-tertiary) !important;
+  font-weight: var(--weight-medium) !important;
+  font-family: var(--font-interface) !important;
+  transition: color var(--duration-micro) var(--ease-micro) !important;
+}
+
+.alphaPickerButton:hover {
+  color: var(--text-primary) !important;
+}
+
+.alphaPickerButton-selected {
+  color: var(--ambient-accent) !important;
+}
+
+.emby-scrollbuttons-button.paper-icon-button-light > .material-icons {
+  font-size: 1.5em;
+  color: var(--text-secondary) !important;
+}
+
+.sections.homeSectionsContainer {
+  padding: 0 var(--page-padding-desktop);
+}
+
+@media (max-width: 639px) {
+  .sections.homeSectionsContainer {
+    padding: 0 var(--page-padding-mobile);
+  }
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 7. VIDEO PLAYER / OSD
+ * ------------------------------------------------------------------------ */
+
+.videoOsdBottom.videoOsdBottom-maincontrols {
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.75) 0%,
+    transparent 100%
+  ) !important;
+}
+
+.skinHeader-withBackground.osdHeader {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.6) 0%,
+    transparent 100%
+  ) !important;
+}
+
+.mdl-slider-background-lower {
+  background-color: var(--text-primary) !important;
+}
+
+.mdl-slider-background-upper,
+.mdl-slider-background-flex {
+  background: rgba(255, 255, 255, 0.08) !important;
+}
+
+.mdl-slider::-webkit-slider-thumb {
+  background: var(--text-primary) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.mdl-slider::-moz-range-thumb {
+  background: var(--text-primary) !important;
+  border: none !important;
+  border-radius: 50% !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.playbackProgress > div {
+  background-color: var(--ambient-accent) !important;
+}
+
+.videoOsdBottom.videoOsdBottom-maincontrols .btnPause {
+  font-size: 2em;
+}
+
+.startTimeText,
+.endTimeText,
+.positionTime,
+.runtime {
+  font-variant-numeric: tabular-nums;
+  font-family: var(--font-interface) !important;
+}
+
+.upNextContainer {
+  background: var(--glass-bg-panel) !important;
+  backdrop-filter: var(--glass-blur-panel) !important;
+  -webkit-backdrop-filter: var(--glass-blur-panel) !important;
+  border: var(--glass-border-panel) !important;
+  border-radius: var(--radius-glass-panel) !important;
+}
+
+.upNextContainer .btnStartNow {
+  background: var(--glass-bg-interactive) !important;
+  border: var(--glass-border-interactive) !important;
+  border-radius: var(--radius-pill) !important;
+}
+
+#skipIntro .emby-button {
+  background: var(--glass-bg-osd) !important;
+  backdrop-filter: var(--glass-blur-osd) !important;
+  -webkit-backdrop-filter: var(--glass-blur-osd) !important;
+  border: var(--glass-border-osd) !important;
+  border-radius: var(--radius-pill) !important;
+  color: var(--text-primary) !important;
+}
+
+.appfooter {
+  background-color: var(--glass-bg-chrome) !important;
+  backdrop-filter: var(--glass-blur-chrome) !important;
+  -webkit-backdrop-filter: var(--glass-blur-chrome) !important;
+  border-top: var(--glass-border-chrome) !important;
+}
+
+.nowPlayingBar .nowPlayingImage {
+  border-radius: var(--radius-tag) !important;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 8. DIALOGS & MODALS
+ * ------------------------------------------------------------------------ */
+
+.dialog {
+  background-color: var(--glass-bg-overlay) !important;
+  backdrop-filter: var(--glass-blur-overlay) !important;
+  -webkit-backdrop-filter: var(--glass-blur-overlay) !important;
+  border: var(--glass-border-overlay) !important;
+  border-radius: var(--radius-glass-panel) !important;
+  box-shadow: var(--shadow-overlay) !important;
+}
+
+.dialogBackdropOpened {
+  background: rgba(0, 0, 0, 0.6) !important;
+}
+
+.formDialogHeader:not(.formDialogHeader-clear),
+.formDialogFooter:not(.formDialogFooter-clear) {
+  background: var(--glass-bg-panel) !important;
+  backdrop-filter: var(--glass-blur-panel) !important;
+  -webkit-backdrop-filter: var(--glass-blur-panel) !important;
+}
+
+.formDialogContent {
+  background: var(--glass-bg-overlay) !important;
+}
+
+.actionSheetContent {
+  background: var(--glass-bg-overlay) !important;
+  backdrop-filter: var(--glass-blur-overlay) !important;
+  -webkit-backdrop-filter: var(--glass-blur-overlay) !important;
+  border-radius: var(--radius-glass-panel) !important;
+}
+
+.actionSheetMenuItem.emby-button:hover,
+.listItem:hover {
+  background-color: rgba(255, 255, 255, 0.04) !important;
+  border-radius: var(--radius-nav-link) !important;
+}
+
+.MuiMenu-paper {
+  background: var(--glass-bg-overlay) !important;
+  backdrop-filter: var(--glass-blur-overlay) !important;
+  -webkit-backdrop-filter: var(--glass-blur-overlay) !important;
+  border-radius: var(--radius-glass-panel) !important;
+}
+
+.MuiDrawer-paper {
+  background: var(--glass-bg-overlay) !important;
+  backdrop-filter: var(--glass-blur-overlay) !important;
+  -webkit-backdrop-filter: var(--glass-blur-overlay) !important;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 9. FORM ELEMENTS
+ * ------------------------------------------------------------------------ */
+
+.emby-select-withcolor,
+.emby-select,
+.emby-input,
+.emby-textarea {
+  background-color: var(--glass-bg-interactive) !important;
+  border: var(--glass-border-interactive) !important;
+  border-radius: var(--radius-pill) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-interface) !important;
+  padding: 8px 12px !important;
+}
+
+.emby-select-withcolor:focus,
+.emby-input:focus,
+.emby-textarea:focus {
+  border-color: var(--border-active) !important;
+  box-shadow: var(--focus-ring) !important;
+  outline: none !important;
+}
+
+.emby-select-withcolor > option {
+  background-color: var(--surface-deep) !important;
+  color: var(--text-primary) !important;
+}
+
+.inputLabelFocused,
+.selectLabelFocused,
+.textareaLabelFocused {
+  color: var(--text-primary) !important;
+}
+
+.emby-checkbox:checked + span + .checkboxOutline {
+  background: var(--ambient-accent) !important;
+  border-color: var(--ambient-accent) !important;
+}
+
+.searchfields-txtSearch {
+  background: var(--glass-bg-interactive) !important;
+  border: var(--glass-border-interactive) !important;
+  border-radius: 24px !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-interface) !important;
+  padding: 10px 20px !important;
+}
+
+.searchfields-txtSearch:focus {
+  border-color: var(--border-active) !important;
+  box-shadow: var(--focus-ring) !important;
+}
+
+.button-submit {
+  background: var(--glass-bg-interactive) !important;
+  border: var(--glass-border-interactive) !important;
+  border-radius: var(--radius-pill) !important;
+  color: var(--text-primary) !important;
+  font-family: var(--font-interface) !important;
+  font-weight: var(--weight-medium) !important;
+}
+
+.raised:active,
+.fab:active,
+.emby-button:active {
+  transform: scale(0.98) !important;
+}
+
+.paperList {
+  background-color: var(--surface-elevated) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-glass-panel) !important;
+}
+
+.listItemIcon:not(.listItemIcon-transparent) {
+  background-color: var(--glass-bg-interactive) !important;
+  color: var(--text-primary) !important;
+}
+
+.listItemImage {
+  border-radius: var(--radius-tag) !important;
+  border: 1px solid var(--border-subtle) !important;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 10. SCROLLBARS
+ * Scoped to major scrollable containers — not * which would fight
+ * Jellyfin's hidden-scrollbar horizontal scrollers.
+ * ------------------------------------------------------------------------ */
+
+html,
+body,
+.mainAnimatedPages,
+.mainDrawer-scrollContainer,
+.formDialogContent,
+.libraryPage,
+.detailPageContent {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.06) transparent;
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+.mainAnimatedPages::-webkit-scrollbar,
+.mainDrawer-scrollContainer::-webkit-scrollbar,
+.formDialogContent::-webkit-scrollbar,
+.libraryPage::-webkit-scrollbar,
+.detailPageContent::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track,
+.mainAnimatedPages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb,
+.mainAnimatedPages::-webkit-scrollbar-thumb,
+.mainDrawer-scrollContainer::-webkit-scrollbar-thumb,
+.formDialogContent::-webkit-scrollbar-thumb,
+.libraryPage::-webkit-scrollbar-thumb,
+.detailPageContent::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.06);
+  border-radius: 3px;
+}
+
+html::-webkit-scrollbar-thumb:hover,
+body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 11. PROGRESS BARS
+ * ------------------------------------------------------------------------ */
+
+progress {
+  border-radius: var(--radius-tag) !important;
+  overflow: hidden !important;
+}
+
+progress::-webkit-progress-bar {
+  background: var(--surface-elevated) !important;
+  border: 1px solid var(--border-subtle) !important;
+  border-radius: var(--radius-tag) !important;
+}
+
+progress::-webkit-progress-value {
+  background: var(--ambient-accent) !important;
+  border-radius: var(--radius-tag) !important;
+}
+
+::-moz-progress-bar {
+  background: var(--ambient-accent) !important;
+}
+
+.mdl-spinner__layer-1,
+.mdl-spinner__layer-2,
+.mdl-spinner__layer-3,
+.mdl-spinner__layer-4,
+.progressring-spiner {
+  border-color: var(--ambient-accent) !important;
+}
+
+
+/* ---------------------------------------------------------------------------
+ * 12. RESPONSIVE MOBILE OVERRIDES
+ * ------------------------------------------------------------------------ */
+
+.layout-mobile .skinHeader {
+  background: var(--glass-bg-chrome) !important;
+  backdrop-filter: var(--glass-blur-chrome) !important;
+  -webkit-backdrop-filter: var(--glass-blur-chrome) !important;
+}
+
+.layout-mobile .detailPagePrimaryContent {
+  padding-left: var(--page-padding-mobile) !important;
+  padding-right: var(--page-padding-mobile) !important;
+}
