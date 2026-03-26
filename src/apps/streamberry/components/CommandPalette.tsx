@@ -64,7 +64,7 @@ interface PaletteResultRowProps {
     onSelect: (item: BaseItemDto) => void;
 }
 
-function PaletteResultRow({ item, isHighlighted, onSelect }: PaletteResultRowProps) {
+function PaletteResultRow({ item, isHighlighted, onSelect }: Readonly<PaletteResultRowProps>) {
     const itemId = item.Id ?? '';
     const itemName = item.Name ?? 'Unknown';
     const typeName = item.Type ?? '';
@@ -90,7 +90,6 @@ function PaletteResultRow({ item, isHighlighted, onSelect }: PaletteResultRowPro
             className={`sb-command__result-row${isHighlighted ? ' sb-command__result-row--highlighted' : ''}`}
             onClick={handleClick}
             onKeyDown={handleKeyDown}
-            aria-selected={isHighlighted}
             data-item-id={itemId}
         >
             <div className='sb-command__result-thumb'>
@@ -125,7 +124,7 @@ interface PaletteSectionHeaderProps {
     label: string;
 }
 
-function PaletteSectionHeader({ label }: PaletteSectionHeaderProps) {
+function PaletteSectionHeader({ label }: Readonly<PaletteSectionHeaderProps>) {
     return (
         <div className='sb-command__section-header' role='presentation'>
             {label}
@@ -210,9 +209,9 @@ export function CommandPalette() {
             if (event.key === 'ArrowUp') {
                 event.preventDefault();
                 setHighlightedIndex(prev =>
-                    flatResults.length > 0
-                        ? (prev - 1 + flatResults.length) % flatResults.length
-                        : 0
+                    flatResults.length > 0 ?
+                        (prev - 1 + flatResults.length) % flatResults.length :
+                        0
                 );
                 return;
             }

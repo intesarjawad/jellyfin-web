@@ -54,9 +54,9 @@ const NavBar = () => {
     const isHomePath = location.pathname === '/home' || location.pathname === '/';
 
     const userAvatarSrc =
-        api && user?.Id && user?.PrimaryImageTag
-            ? buildUserAvatarUrl(api.basePath, user.Id, user.PrimaryImageTag)
-            : null;
+        api && user?.Id && user?.PrimaryImageTag ?
+            buildUserAvatarUrl(api.basePath, user.Id, user.PrimaryImageTag) :
+            null;
 
     const userInitial = user?.Name ? user.Name.charAt(0).toUpperCase() : '?';
 

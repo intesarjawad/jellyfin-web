@@ -32,7 +32,7 @@ const SKELETON_CARD_COUNT = 20;
  * rather than inside Card.tsx because the detail route is app-surface-specific
  * (Streamberry uses /details, experimental uses /item).
  */
-export function LibraryGrid({ items, variant = 'poster', isLoading = false }: LibraryGridProps) {
+export function LibraryGrid({ items, variant = 'poster', isLoading = false }: Readonly<LibraryGridProps>) {
     const containerRef = useRef<HTMLDivElement>(null);
     useInteractionAura(containerRef);
 
@@ -75,16 +75,16 @@ interface LibraryCardProps {
     variant: CardVariant;
 }
 
-function LibraryCard({ item, variant }: LibraryCardProps) {
+function LibraryCard({ item, variant }: Readonly<LibraryCardProps>) {
     const navigate = useNavigate();
 
     const imageType = variant === 'poster' ? 'Primary' : 'Thumb';
     const imageUrl = useItemImageUrl(item.Id ?? '', imageType);
 
     const watchProgress =
-        item.UserData?.PlayedPercentage != null
-            ? item.UserData.PlayedPercentage / 100
-            : undefined;
+        item.UserData?.PlayedPercentage != null ?
+            item.UserData.PlayedPercentage / 100 :
+            undefined;
 
     const releaseYear =
         item.ProductionYear != null ? item.ProductionYear : undefined;
@@ -116,7 +116,7 @@ interface SkeletonCardProps {
     variant: CardVariant;
 }
 
-function SkeletonCard({ variant }: SkeletonCardProps) {
+function SkeletonCard({ variant }: Readonly<SkeletonCardProps>) {
     return (
         <div className={`sb-card sb-card--${variant}`} aria-hidden='true'>
             <div className='sb-card__image-wrap sb-card__image-wrap--skeleton' />

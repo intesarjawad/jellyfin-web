@@ -87,7 +87,7 @@ type OpenPopover = 'subtitles' | 'audio' | null;
  *   - React state is reserved for data that genuinely changes the rendered
  *     structure: isPaused, mediaTitle, track lists, open popovers.
  */
-const PlayerOSD: FC<PlayerOSDProps> = ({ onBack }) => {
+const PlayerOSD: FC<Readonly<PlayerOSDProps>> = ({ onBack }) => {
     // -- State: structural changes only -------------------------------------
     const [ isPaused, setIsPaused ] = useState(true);
     const [ titlePrimary, setTitlePrimary ] = useState('');
@@ -188,9 +188,9 @@ const PlayerOSD: FC<PlayerOSDProps> = ({ onBack }) => {
         const bufferedRanges = playbackManager.getBufferedRanges(player) as BufferedRange[];
         if (progressBufferedRef.current && bufferedRanges.length > 0) {
             const lastRange = bufferedRanges[bufferedRanges.length - 1];
-            const bufferedFraction = durationTicks > 0
-                ? lastRange.end / durationTicks
-                : 0;
+            const bufferedFraction = durationTicks > 0 ?
+                lastRange.end / durationTicks :
+                0;
             progressBufferedRef.current.style.width =
                 `${Math.min(bufferedFraction * 100, 100).toFixed(3)}%`;
         }

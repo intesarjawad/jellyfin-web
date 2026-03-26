@@ -160,7 +160,7 @@ interface SimilarItemsRowProps {
     items: ItemDto[];
 }
 
-function SimilarItemsRow({ items }: SimilarItemsRowProps) {
+function SimilarItemsRow({ items }: Readonly<SimilarItemsRowProps>) {
     return (
         <section className='sb-detail__similar sb-row' aria-label='More like this'>
             <h2 className='sb-row__title'>More Like This</h2>
@@ -187,7 +187,7 @@ interface SimilarItemCardProps {
     item: ItemDto;
 }
 
-function SimilarItemCard({ item }: SimilarItemCardProps) {
+function SimilarItemCard({ item }: Readonly<SimilarItemCardProps>) {
     const navigate = useNavigate();
     const itemId = item.Id ?? '';
     const itemName = item.Name ?? 'Unknown';
@@ -231,7 +231,7 @@ interface DetailErrorStateProps {
     message: string;
 }
 
-function DetailErrorState({ message }: DetailErrorStateProps) {
+function DetailErrorState({ message }: Readonly<DetailErrorStateProps>) {
     return (
         <div className='sb-detail sb-detail--error'>
             <div className='sb-detail__content'>

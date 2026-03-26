@@ -53,7 +53,7 @@ interface SearchCardProps {
     item: BaseItemDto;
 }
 
-function SearchCard({ item }: SearchCardProps) {
+function SearchCard({ item }: Readonly<SearchCardProps>) {
     const navigate = useNavigate();
     const itemId = item.Id ?? '';
     const itemName = item.Name ?? 'Unknown';
@@ -91,7 +91,7 @@ interface SearchResultGroupProps {
     items: BaseItemDto[];
 }
 
-function SearchResultGroup({ typeName, items }: SearchResultGroupProps) {
+function SearchResultGroup({ typeName, items }: Readonly<SearchResultGroupProps>) {
     const sectionLabel = resolveTypeLabel(typeName);
     const isPosterRow = typeName === 'Movie' || typeName === 'Series' || typeName === 'Person' || typeName === 'BoxSet';
     const gridClass = `sb-row__grid sb-row__grid--${isPosterRow ? 'poster' : 'landscape'}`;
@@ -250,7 +250,7 @@ interface NoResultsStateProps {
     queryText: string;
 }
 
-function NoResultsState({ queryText }: NoResultsStateProps) {
+function NoResultsState({ queryText }: Readonly<NoResultsStateProps>) {
     return (
         <div className='sb-search__empty-state'>
             <p className='sb-search__empty-title'>No results for &ldquo;{queryText}&rdquo;</p>

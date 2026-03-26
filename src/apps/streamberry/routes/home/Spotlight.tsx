@@ -16,7 +16,7 @@ interface SpotlightProps {
  * Positioned between the hero and the content rows. Renders nothing when items
  * is empty so the caller does not need to guard against it.
  */
-export function Spotlight({ items }: SpotlightProps) {
+export function Spotlight({ items }: Readonly<SpotlightProps>) {
     const spotlightItems = items.slice(0, SPOTLIGHT_ITEM_COUNT);
 
     if (spotlightItems.length === 0) return null;
@@ -40,7 +40,7 @@ interface SpotlightCardProps {
     item: ItemDto;
 }
 
-function SpotlightCard({ item }: SpotlightCardProps) {
+function SpotlightCard({ item }: Readonly<SpotlightCardProps>) {
     const navigate = useNavigate();
 
     const itemId = item.Id ?? '';
@@ -116,7 +116,7 @@ interface SpotlightImageFallbackProps {
     itemName: string;
 }
 
-function SpotlightImageFallback({ itemName }: SpotlightImageFallbackProps) {
+function SpotlightImageFallback({ itemName }: Readonly<SpotlightImageFallbackProps>) {
     return (
         <div
             className='sb-spotlight__image sb-spotlight__image--fallback'

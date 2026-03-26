@@ -58,7 +58,7 @@ interface BrandProviderProps {
     children: ReactNode;
 }
 
-export function BrandProvider({ children }: BrandProviderProps) {
+export function BrandProvider({ children }: Readonly<BrandProviderProps>) {
     const [brandConfig, setBrandConfig] = useState<BrandContextValue>(DEFAULT_BRAND_CONFIG);
     const { user } = useApi();
 

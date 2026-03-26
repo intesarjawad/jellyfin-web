@@ -37,12 +37,12 @@ interface GlassPanelProps {
  *   <DetailContent />
  * </GlassPanel>
  */
-export const GlassPanel = forwardRef<HTMLElement, GlassPanelProps>(
+export const GlassPanel = forwardRef<HTMLElement, Readonly<GlassPanelProps>>(
     ({ children, className, elevation = 'medium', as: Tag = 'div' }, ref) => {
         const elevationClass = ELEVATION_CLASS[elevation];
-        const resolvedClassName = className
-            ? `${elevationClass} ${className}`
-            : elevationClass;
+        const resolvedClassName = className ?
+            `${elevationClass} ${className}` :
+            elevationClass;
 
         const AnyTag = Tag as ElementType;
 

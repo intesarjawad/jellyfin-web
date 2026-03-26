@@ -5,11 +5,11 @@ interface CardProps {
     itemName: string;
     imageUrl: string | null;
     variant: 'poster' | 'landscape';
-    progress?: number;       // 0–1, watch progress
-    rating?: string;         // e.g. "TV-MA", "PG-13"
+    progress?: number; // 0–1, watch progress
+    rating?: string; // e.g. "TV-MA", "PG-13"
     year?: number;
-    episodeInfo?: string;    // e.g. "S2:E5"
-    showTitle?: boolean;     // defaults to true
+    episodeInfo?: string; // e.g. "S2:E5"
+    showTitle?: boolean; // defaults to true
     onClick?: () => void;
 }
 
@@ -37,7 +37,7 @@ export function Card({
     episodeInfo,
     showTitle = true,
     onClick
-}: CardProps) {
+}: Readonly<CardProps>) {
     const cardClass = `sb-card sb-card--${variant}`;
     const badgeText = episodeInfo ?? rating ?? null;
     const progressPercent = progress != null ? Math.min(1, Math.max(0, progress)) * 100 : null;
@@ -122,7 +122,7 @@ interface FallbackImagePlaceholderProps {
  * Uses a CSS-variable gradient so it inherits the ambient accent color.
  * The item name gives the user context when artwork fails to load.
  */
-function FallbackImagePlaceholder({ itemName }: FallbackImagePlaceholderProps) {
+function FallbackImagePlaceholder({ itemName }: Readonly<FallbackImagePlaceholderProps>) {
     return (
         <div
             className='sb-card__image sb-card__image--fallback'

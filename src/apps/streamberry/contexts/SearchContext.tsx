@@ -19,7 +19,7 @@ interface SearchProviderProps {
     children: ReactNode;
 }
 
-export function SearchProvider({ children }: SearchProviderProps): JSX.Element {
+export function SearchProvider({ children }: Readonly<SearchProviderProps>): JSX.Element {
     const [isOpen, setIsOpen] = useState(false);
 
     const openPalette = useCallback(() => setIsOpen(true), []);

@@ -94,7 +94,6 @@ export function useSearch(searchTerm: string): SearchResultGroups {
                         searchTerm: debouncedSearchTerm,
                         fields: SEARCH_FIELDS,
                         imageTypeLimit: 1,
-                        enableTotalRecordCount: false,
                         limit: PEOPLE_RESULT_LIMIT
                     },
                     { signal }

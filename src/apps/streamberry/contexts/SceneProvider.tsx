@@ -115,9 +115,9 @@ function interpolateOklch(from: OklchColor, to: OklchColor, progress: number): O
  * Applies a smooth ease-in-out cubic curve to a linear progress value.
  */
 function easeInOut(linearProgress: number): number {
-    return linearProgress < 0.5
-        ? 2 * linearProgress * linearProgress
-        : 1 - Math.pow(-2 * linearProgress + 2, 2) / 2;
+    return linearProgress < 0.5 ?
+        2 * linearProgress * linearProgress :
+        1 - Math.pow(-2 * linearProgress + 2, 2) / 2;
 }
 
 /**
@@ -221,7 +221,7 @@ function buildGovernedPalette(
  *
  * Caches up to PALETTE_CACHE_MAX palettes by item ID using LRU eviction.
  */
-export function SceneProvider({ children }: SceneProviderProps) {
+export function SceneProvider({ children }: Readonly<SceneProviderProps>) {
     const [activeItem, setActiveItem] = useState<ActiveSceneItem | null>(null);
 
     // Palette cache keyed by itemId. Stored in a ref to avoid causing re-renders.
@@ -301,13 +301,13 @@ export function SceneProvider({ children }: SceneProviderProps) {
                 const dominantColor = extractedColors[0];
                 const paletteIsGrayscale = !dominantColor || !isChromatic(dominantColor.r, dominantColor.g, dominantColor.b);
 
-                const palette = paletteIsGrayscale
-                    ? {
+                const palette = paletteIsGrayscale ?
+                    {
                         ambientPrimary: OKLCH_SEMANTIC_FALLBACK,
                         ambientSecondary: OKLCH_SEMANTIC_FALLBACK,
                         ambientAccent: OKLCH_SEMANTIC_FALLBACK
-                    }
-                    : buildGovernedPalette(extractedColors);
+                    } :
+                    buildGovernedPalette(extractedColors);
 
                 evictLruEntryIfNeeded();
                 accessCounter.current += 1;

@@ -24,7 +24,7 @@ interface HeroProps {
  *
  * Crossfade is handled by CSS opacity transitions on absolute-positioned slides.
  */
-export function Hero({ items }: HeroProps) {
+export function Hero({ items }: Readonly<HeroProps>) {
     const [activeIndex, setActiveIndex] = useState(0);
     const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);
     const navigate = useNavigate();
@@ -137,7 +137,7 @@ interface HeroSlideProps {
  * Scene colors are NOT managed here — Hero drives that at the parent level
  * to avoid multiple hooks fighting over the active item.
  */
-function HeroSlide({ item, isActive, crossfadeDurationMs, onPlay, onMoreInfo }: HeroSlideProps) {
+function HeroSlide({ item, isActive, crossfadeDurationMs, onPlay, onMoreInfo }: Readonly<HeroSlideProps>) {
     const itemId = item.Id ?? '';
     const itemName = item.Name ?? 'Unknown';
     const releaseYear = item.ProductionYear ?? null;
@@ -150,9 +150,9 @@ function HeroSlide({ item, isActive, crossfadeDurationMs, onPlay, onMoreInfo }: 
     const displayImageUrl = backdropUrl ?? primaryUrl;
 
     const truncatedOverview =
-        overview != null && overview.length > OVERVIEW_VISIBLE_LENGTH
-            ? `${overview.slice(0, OVERVIEW_VISIBLE_LENGTH).trimEnd()}…`
-            : overview;
+        overview != null && overview.length > OVERVIEW_VISIBLE_LENGTH ?
+            `${overview.slice(0, OVERVIEW_VISIBLE_LENGTH).trimEnd()}…` :
+            overview;
 
     const slideStyle: React.CSSProperties = {
         opacity: isActive ? 1 : 0,
@@ -239,7 +239,7 @@ interface HeroDotRowProps {
     onDotClick: (index: number) => void;
 }
 
-function HeroDotRow({ totalItems, activeIndex, onDotClick }: HeroDotRowProps) {
+function HeroDotRow({ totalItems, activeIndex, onDotClick }: Readonly<HeroDotRowProps>) {
     return (
         <div className='sb-hero__dots' role='tablist' aria-label='Featured items'>
             {Array.from({ length: totalItems }, (_, index) => {

@@ -19,7 +19,7 @@ interface ContentRowProps {
  * or Thumb images. The row is hidden entirely when items is empty so the
  * home layout doesn't leave orphaned section headers.
  */
-export function ContentRow({ title, items, variant = 'poster' }: ContentRowProps) {
+export function ContentRow({ title, items, variant = 'poster' }: Readonly<ContentRowProps>) {
     if (items.length === 0) return null;
 
     const gridClass = `sb-row__grid sb-row__grid--${variant}`;
@@ -47,7 +47,7 @@ interface ContentRowCardProps {
     variant: 'poster' | 'landscape';
 }
 
-function ContentRowCard({ item, variant }: ContentRowCardProps) {
+function ContentRowCard({ item, variant }: Readonly<ContentRowCardProps>) {
     const navigate = useNavigate();
 
     const itemId = item.Id ?? '';

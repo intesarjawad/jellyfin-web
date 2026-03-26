@@ -29,7 +29,7 @@ const RUNTIME_MINUTES_DIVISOR = 60;
  * it handles source selection, transcoding negotiation, and queue setup
  * without the caller needing to know about media sources.
  */
-export function DetailPanel({ item, onFavoriteToggle, isFavorite }: DetailPanelProps) {
+export function DetailPanel({ item, onFavoriteToggle, isFavorite }: Readonly<DetailPanelProps>) {
     const navigate = useNavigate();
     const [overviewExpanded, setOverviewExpanded] = useState(false);
 
@@ -44,17 +44,17 @@ export function DetailPanel({ item, onFavoriteToggle, isFavorite }: DetailPanelP
         .filter(person => person.Type === PersonKind.Actor)
         .slice(0, MAX_CAST_VISIBLE);
 
-    const runtimeMinutes = item.RunTimeTicks != null
-        ? Math.round(item.RunTimeTicks / 10_000_000 / RUNTIME_MINUTES_DIVISOR)
-        : null;
+    const runtimeMinutes = item.RunTimeTicks != null ?
+        Math.round(item.RunTimeTicks / 10_000_000 / RUNTIME_MINUTES_DIVISOR) :
+        null;
 
     const overviewIsTruncatable =
         overview != null && overview.length > OVERVIEW_COLLAPSE_LENGTH;
     const displayedOverview =
         overview == null ? null :
-        overviewIsTruncatable && !overviewExpanded
-            ? `${overview.slice(0, OVERVIEW_COLLAPSE_LENGTH).trimEnd()}…`
-            : overview;
+        overviewIsTruncatable && !overviewExpanded ?
+            `${overview.slice(0, OVERVIEW_COLLAPSE_LENGTH).trimEnd()}…` :
+            overview;
 
     const posterUrl = useItemImageUrl(itemId, 'Primary', { maxWidth: 400 });
 
@@ -158,7 +158,7 @@ interface DetailPosterProps {
     itemName: string;
 }
 
-function DetailPoster({ posterUrl, itemName }: DetailPosterProps) {
+function DetailPoster({ posterUrl, itemName }: Readonly<DetailPosterProps>) {
     return (
         <div className='sb-detail__poster-wrap'>
             {posterUrl != null ? (
@@ -185,7 +185,7 @@ interface DetailMetaRowProps {
     officialRating: string | null;
 }
 
-function DetailMetaRow({ releaseYear, runtimeMinutes, officialRating }: DetailMetaRowProps) {
+function DetailMetaRow({ releaseYear, runtimeMinutes, officialRating }: Readonly<DetailMetaRowProps>) {
     if (releaseYear == null && runtimeMinutes == null && officialRating == null) {
         return null;
     }
@@ -213,7 +213,7 @@ interface CastRowProps {
     castMembers: BaseItemPerson[];
 }
 
-function CastRow({ castMembers }: CastRowProps) {
+function CastRow({ castMembers }: Readonly<CastRowProps>) {
     return (
         <div className='sb-detail__cast'>
             <span className='sb-detail__cast-label type-label'>Cast</span>

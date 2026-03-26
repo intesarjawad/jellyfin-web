@@ -89,7 +89,7 @@ function useEpisodes(seriesId: string, seasonId: string | null) {
  * Season selector renders as a row of tab buttons — easy to scan, no dropdown
  * needed for the typical 1–5 season range.
  */
-export function SeasonBrowser({ seriesId }: SeasonBrowserProps) {
+export function SeasonBrowser({ seriesId }: Readonly<SeasonBrowserProps>) {
     const { data: seasons = [], isLoading: seasonsLoading } = useSeasons(seriesId);
 
     const [selectedSeasonId, setSelectedSeasonId] = useState<string | null>(null);
@@ -142,7 +142,7 @@ interface SeasonTabsProps {
     onSeasonSelect: (seasonId: string) => void;
 }
 
-function SeasonTabs({ seasons, activeSeasonId, onSeasonSelect }: SeasonTabsProps) {
+function SeasonTabs({ seasons, activeSeasonId, onSeasonSelect }: Readonly<SeasonTabsProps>) {
     return (
         <div className='sb-season-browser__tabs' role='tablist' aria-label='Seasons'>
             {seasons.map(season => {
@@ -172,7 +172,7 @@ interface EpisodeListProps {
     episodes: ItemDto[];
 }
 
-function EpisodeList({ episodes }: EpisodeListProps) {
+function EpisodeList({ episodes }: Readonly<EpisodeListProps>) {
     if (episodes.length === 0) {
         return (
             <p className='sb-season-browser__empty type-synopsis'>
@@ -200,30 +200,30 @@ interface EpisodeCardProps {
     episode: ItemDto;
 }
 
-function EpisodeCard({ episode }: EpisodeCardProps) {
+function EpisodeCard({ episode }: Readonly<EpisodeCardProps>) {
     const episodeId = episode.Id ?? '';
     const episodeName = episode.Name ?? 'Untitled';
     const episodeNumber = episode.IndexNumber ?? null;
     const seasonNumber = episode.ParentIndexNumber ?? null;
     const overview = episode.Overview ?? null;
-    const runtimeMinutes = episode.RunTimeTicks != null
-        ? Math.round(episode.RunTimeTicks / 10_000_000 / 60)
-        : null;
+    const runtimeMinutes = episode.RunTimeTicks != null ?
+        Math.round(episode.RunTimeTicks / 10_000_000 / 60) :
+        null;
 
     const watchProgress = resolveWatchProgress(episode);
     const thumbnailUrl = useItemImageUrl(episodeId, 'Thumb', { maxWidth: 400 });
 
     const episodeLabel =
-        seasonNumber != null && episodeNumber != null
-            ? `S${seasonNumber} E${episodeNumber}`
-            : episodeNumber != null
-            ? `E${episodeNumber}`
-            : null;
+        seasonNumber != null && episodeNumber != null ?
+            `S${seasonNumber} E${episodeNumber}` :
+            episodeNumber != null ?
+            `E${episodeNumber}` :
+            null;
 
     const truncatedOverview =
-        overview != null && overview.length > EPISODE_OVERVIEW_LENGTH
-            ? `${overview.slice(0, EPISODE_OVERVIEW_LENGTH).trimEnd()}…`
-            : overview;
+        overview != null && overview.length > EPISODE_OVERVIEW_LENGTH ?
+            `${overview.slice(0, EPISODE_OVERVIEW_LENGTH).trimEnd()}…` :
+            overview;
 
     return (
         <GlassPanel

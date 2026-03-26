@@ -50,7 +50,7 @@ export function FilterBar({
     onSortChange,
     viewType = 'grid',
     onViewTypeChange
-}: FilterBarProps) {
+}: Readonly<FilterBarProps>) {
     const sortSelectId = useId();
 
     const handleSortFieldChange = useCallback(
@@ -139,7 +139,7 @@ export function FilterBar({
 // Icon sub-components — inline SVG, no external dependency needed
 // ---------------------------------------------------------------------------
 
-function SortDirectionIcon({ isAscending }: { isAscending: boolean }) {
+function SortDirectionIcon({ isAscending }: Readonly<{ isAscending: boolean }>) {
     return (
         <svg
             viewBox='0 0 16 16'

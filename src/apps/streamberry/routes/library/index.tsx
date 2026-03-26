@@ -118,9 +118,9 @@ export function LibraryPage() {
     // location.pathname may be "/movies" or "/streamberry/movies" depending on
     // how the router nests the surface — take the final segment to be safe.
     const routeSegment = location.pathname.split('/').filter(Boolean).pop() ?? '';
-    const routeConfig = isLibraryRoutePath(routeSegment)
-        ? LIBRARY_ROUTE_CONFIG[routeSegment]
-        : LIBRARY_ROUTE_CONFIG.movies; // safe fallback
+    const routeConfig = isLibraryRoutePath(routeSegment) ?
+        LIBRARY_ROUTE_CONFIG[routeSegment] :
+        LIBRARY_ROUTE_CONFIG.movies; // safe fallback
 
     // The library parent folder ID comes from topParentId, matching the
     // experimental surface and useCurrentTab conventions.
