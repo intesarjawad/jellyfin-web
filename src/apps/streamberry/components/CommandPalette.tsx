@@ -240,12 +240,19 @@ export function CommandPalette() {
         [closePalette]
     );
 
+    const handleSeeAllClick = useCallback(() => {
+        navigate(`/search?q=${encodeURIComponent(queryText.trim())}`);
+        closePalette();
+    }, [navigate, queryText, closePalette]);
+
     if (!isOpen) return null;
 
     return (
+        {/* eslint-disable-next-line jsx-a11y/no-noninteractive-element-interactions, jsx-a11y/click-events-have-key-events */}
         <div
             className='sb-command__backdrop'
             onClick={handleBackdropClick}
+            onKeyDown={handleKeyDown}
             aria-modal='true'
             role='dialog'
             aria-label='Search'
@@ -297,10 +304,7 @@ export function CommandPalette() {
                         {flatResults.length > 0 && totalResults > flatResults.length && (
                             <button
                                 className='sb-command__see-all'
-                                onClick={() => {
-                                    navigate(`/search?q=${encodeURIComponent(queryText.trim())}`);
-                                    closePalette();
-                                }}
+                                onClick={handleSeeAllClick}
                             >
                                 See all {totalResults} results for &ldquo;{queryText}&rdquo;
                             </button>
@@ -325,10 +329,10 @@ export function CommandPalette() {
 function renderPaletteResultsWithHeaders(
     resultGroups: Map<string, BaseItemDto[]>,
     orderedKeys: string[],
-    flatResults: BaseItemDto[],
+    _flatResults: BaseItemDto[],
     highlightedIndex: number,
     selectItem: (item: BaseItemDto) => void
-): React.ReactNode {
+): React.ReactNode[] {
     const nodes: React.ReactNode[] = [];
     let flatIndex = 0;
 

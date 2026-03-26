@@ -240,6 +240,11 @@ interface HeroDotRowProps {
 }
 
 function HeroDotRow({ totalItems, activeIndex, onDotClick }: Readonly<HeroDotRowProps>) {
+    const handleDotClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+        const dotIndex = Number(e.currentTarget.dataset.dotIndex);
+        onDotClick(dotIndex);
+    }, [ onDotClick ]);
+
     return (
         <div className='sb-hero__dots' role='tablist' aria-label='Featured items'>
             {Array.from({ length: totalItems }, (_, index) => {
@@ -248,10 +253,11 @@ function HeroDotRow({ totalItems, activeIndex, onDotClick }: Readonly<HeroDotRow
                     <button
                         key={index}
                         className={`sb-hero__dot${isActive ? ' sb-hero__dot--active' : ''}`}
+                        data-dot-index={index}
                         role='tab'
                         aria-selected={isActive}
                         aria-label={`Featured item ${index + 1}`}
-                        onClick={() => onDotClick(index)}
+                        onClick={handleDotClick}
                     />
                 );
             })}

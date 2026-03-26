@@ -68,6 +68,10 @@ export function DetailPanel({ item, onFavoriteToggle, isFavorite }: Readonly<Det
         }
     }, [itemId, navigate]);
 
+    const handleOverviewToggle = useCallback(() => {
+        setOverviewExpanded(prev => !prev);
+    }, []);
+
     return (
         <GlassPanel
             as='section'
@@ -105,7 +109,7 @@ export function DetailPanel({ item, onFavoriteToggle, isFavorite }: Readonly<Det
                             {overviewIsTruncatable && (
                                 <button
                                     className='sb-detail__overview-toggle type-tag'
-                                    onClick={() => setOverviewExpanded(prev => !prev)}
+                                    onClick={handleOverviewToggle}
                                     aria-expanded={overviewExpanded}
                                 >
                                     {overviewExpanded ? 'Show less' : 'Show more'}

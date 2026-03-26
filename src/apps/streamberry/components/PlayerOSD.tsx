@@ -368,6 +368,24 @@ const PlayerOSD: FC<Readonly<PlayerOSDProps>> = ({ onBack }) => {
         setOpenPopover(null);
     }, []);
 
+    const handleSubtitleTrackClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+        const trackIndex = Number(e.currentTarget.dataset.trackIndex);
+        handleSubtitleSelect(trackIndex);
+    }, [ handleSubtitleSelect ]);
+
+    const handleAudioTrackClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+        const trackIndex = Number(e.currentTarget.dataset.trackIndex);
+        handleAudioSelect(trackIndex);
+    }, [ handleAudioSelect ]);
+
+    const handleSubtitlesPopoverToggle = useCallback(() => {
+        setOpenPopover(prev => prev === 'subtitles' ? null : 'subtitles');
+    }, []);
+
+    const handleAudioPopoverToggle = useCallback(() => {
+        setOpenPopover(prev => prev === 'audio' ? null : 'audio');
+    }, []);
+
     // ---------------------------------------------------------------------------
     // Keyboard shortcuts
     // ---------------------------------------------------------------------------
@@ -593,7 +611,8 @@ const PlayerOSD: FC<Readonly<PlayerOSDProps>> = ({ onBack }) => {
             <div className='sb-osd__track-popover' role='listbox' aria-label='Subtitle track'>
                 <button
                     className={`sb-osd__track-item${activeSubtitleIndex === -1 ? ' sb-osd__track-item--active' : ''}`}
-                    onClick={() => handleSubtitleSelect(-1)}
+                    data-track-index={-1}
+                    onClick={handleSubtitleTrackClick}
                     role='option'
                     aria-selected={activeSubtitleIndex === -1}
                 >
@@ -606,7 +625,8 @@ const PlayerOSD: FC<Readonly<PlayerOSDProps>> = ({ onBack }) => {
                     <button
                         key={track.Index}
                         className={`sb-osd__track-item${activeSubtitleIndex === track.Index ? ' sb-osd__track-item--active' : ''}`}
-                        onClick={() => handleSubtitleSelect(track.Index)}
+                        data-track-index={track.Index}
+                        onClick={handleSubtitleTrackClick}
                         role='option'
                         aria-selected={activeSubtitleIndex === track.Index}
                     >
@@ -627,7 +647,8 @@ const PlayerOSD: FC<Readonly<PlayerOSDProps>> = ({ onBack }) => {
                     <button
                         key={track.Index}
                         className={`sb-osd__track-item${activeAudioIndex === track.Index ? ' sb-osd__track-item--active' : ''}`}
-                        onClick={() => handleAudioSelect(track.Index)}
+                        data-track-index={track.Index}
+                        onClick={handleAudioTrackClick}
                         role='option'
                         aria-selected={activeAudioIndex === track.Index}
                     >
@@ -795,7 +816,7 @@ const PlayerOSD: FC<Readonly<PlayerOSDProps>> = ({ onBack }) => {
                             <div className='sb-osd__track-selector'>
                                 <button
                                     className={`sb-osd__btn${openPopover === 'subtitles' ? ' sb-osd__btn--active' : ''}`}
-                                    onClick={() => setOpenPopover(prev => prev === 'subtitles' ? null : 'subtitles')}
+                                    onClick={handleSubtitlesPopoverToggle}
                                     aria-label='Subtitle tracks'
                                     aria-expanded={openPopover === 'subtitles'}
                                 >
@@ -813,7 +834,7 @@ const PlayerOSD: FC<Readonly<PlayerOSDProps>> = ({ onBack }) => {
                             <div className='sb-osd__track-selector'>
                                 <button
                                     className={`sb-osd__btn${openPopover === 'audio' ? ' sb-osd__btn--active' : ''}`}
-                                    onClick={() => setOpenPopover(prev => prev === 'audio' ? null : 'audio')}
+                                    onClick={handleAudioPopoverToggle}
                                     aria-label='Audio tracks'
                                     aria-expanded={openPopover === 'audio'}
                                 >

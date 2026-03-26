@@ -1,5 +1,5 @@
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client/models/base-item-dto';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 
 import { appRouter } from 'components/router/appRouter';
@@ -60,20 +60,39 @@ const NavBar = () => {
 
     const userInitial = user?.Name ? user.Name.charAt(0).toUpperCase() : '?';
 
+    const handleBrandClick = useCallback(() => {
+        navigate('/home');
+    }, [navigate]);
+
+    const handleHomeClick = useCallback((e: React.MouseEvent) => {
+        e.preventDefault();
+        navigate('/home');
+    }, [navigate]);
+
+    const handleProfileClick = useCallback(() => {
+        navigate('/mypreferencesmenu.html');
+    }, [navigate]);
+
+    const handleLibraryClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {
+        e.preventDefault();
+        const href = e.currentTarget.getAttribute('href');
+        if (href) navigate(href);
+    }, [navigate]);
+
     return (
         <nav
             className='sb-topbar'
             aria-label='Main navigation'
             style={{
                 transform: isNavVisible ? 'translateY(0)' : 'translateY(-110%)',
-                transition: 'transform var(--duration-meso) var(--ease-meso)',
+                transition: 'transform var(--duration-meso) var(--ease-meso)'
             }}
         >
             {/* Brand */}
             <div className='sb-topbar__brand'>
                 <button
                     className='sb-topbar__brand'
-                    onClick={() => navigate('/home')}
+                    onClick={handleBrandClick}
                     aria-label={`${brandName} — go to home`}
                     style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 0 }}
                 >
@@ -94,41 +113,36 @@ const NavBar = () => {
             </div>
 
             {/* Library navigation */}
-            <div className='sb-topbar__nav' role='list'>
-                <a
-                    role='listitem'
-                    href='/home'
-                    className={`sb-topbar__link${isHomePath ? ' sb-topbar__link--active' : ''}`}
-                    aria-current={isHomePath ? 'page' : undefined}
-                    onClick={(e) => {
-                        e.preventDefault();
-                        navigate('/home');
-                    }}
-                >
-                    Home
-                </a>
+            <ul className='sb-topbar__nav'>
+                <li>
+                    <a
+                        href='/home'
+                        className={`sb-topbar__link${isHomePath ? ' sb-topbar__link--active' : ''}`}
+                        aria-current={isHomePath ? 'page' : undefined}
+                        onClick={handleHomeClick}
+                    >
+                        Home
+                    </a>
+                </li>
 
                 {libraryViews.map((view) => {
                     const libraryPath = buildLibraryPath(view);
                     const isActive = location.pathname.startsWith(`/${libraryPath.split('?')[0]}`);
 
                     return (
-                        <a
-                            key={view.Id}
-                            role='listitem'
-                            href={`/${libraryPath}`}
-                            className={`sb-topbar__link${isActive ? ' sb-topbar__link--active' : ''}`}
-                            aria-current={isActive ? 'page' : undefined}
-                            onClick={(e) => {
-                                e.preventDefault();
-                                navigate(`/${libraryPath}`);
-                            }}
-                        >
-                            {view.Name}
-                        </a>
+                        <li key={view.Id}>
+                            <a
+                                href={`/${libraryPath}`}
+                                className={`sb-topbar__link${isActive ? ' sb-topbar__link--active' : ''}`}
+                                aria-current={isActive ? 'page' : undefined}
+                                onClick={handleLibraryClick}
+                            >
+                                {view.Name}
+                            </a>
+                        </li>
                     );
                 })}
-            </div>
+            </ul>
 
             {/* Actions */}
             <div className='sb-topbar__right'>
@@ -154,7 +168,7 @@ const NavBar = () => {
 
                 <button
                     className='sb-topbar__profile'
-                    onClick={() => navigate('/mypreferencesmenu.html')}
+                    onClick={handleProfileClick}
                     aria-label={user?.Name ? `Profile: ${user.Name}` : 'Profile'}
                 >
                     {userAvatarSrc ? (
@@ -165,7 +179,7 @@ const NavBar = () => {
                                 width: 28,
                                 height: 28,
                                 borderRadius: '50%',
-                                objectFit: 'cover',
+                                objectFit: 'cover'
                             }}
                         />
                     ) : (
@@ -181,7 +195,7 @@ const NavBar = () => {
                                 fontSize: 13,
                                 fontWeight: 600,
                                 color: 'white',
-                                flexShrink: 0,
+                                flexShrink: 0
                             }}
                         >
                             {userInitial}

@@ -143,6 +143,11 @@ interface SeasonTabsProps {
 }
 
 function SeasonTabs({ seasons, activeSeasonId, onSeasonSelect }: Readonly<SeasonTabsProps>) {
+    const handleSeasonTabClick = useCallback((e: React.MouseEvent<HTMLButtonElement>) => {
+        const seasonId = e.currentTarget.dataset.seasonId ?? '';
+        onSeasonSelect(seasonId);
+    }, [ onSeasonSelect ]);
+
     return (
         <div className='sb-season-browser__tabs' role='tablist' aria-label='Seasons'>
             {seasons.map(season => {
@@ -152,9 +157,10 @@ function SeasonTabs({ seasons, activeSeasonId, onSeasonSelect }: Readonly<Season
                     <button
                         key={seasonId}
                         className={`sb-season-browser__tab type-row-title${isActive ? ' sb-season-browser__tab--active' : ''}`}
+                        data-season-id={seasonId}
                         role='tab'
                         aria-selected={isActive}
-                        onClick={() => onSeasonSelect(seasonId)}
+                        onClick={handleSeasonTabClick}
                     >
                         {season.Name ?? `Season ${season.IndexNumber ?? ''}`}
                     </button>
