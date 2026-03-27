@@ -248,15 +248,17 @@ export function CommandPalette() {
     if (!isOpen) return null;
 
     return (
-        <div
+        <div // eslint-disable-line jsx-a11y/no-static-element-interactions, jsx-a11y/click-events-have-key-events
             className='sb-command__backdrop'
             onClick={handleBackdropClick}
-            onKeyDown={handleKeyDown}
-            aria-modal='true'
-            role='dialog'
-            aria-label='Search'
         >
-            <div className='sb-command__panel glass-panel' role='search'>
+            <div
+                className='sb-command__panel glass-panel'
+                role='dialog'
+                aria-modal='true'
+                aria-label='Search'
+                onKeyDown={handleKeyDown}
+            >
                 {/* Input */}
                 <div className='sb-command__input-row'>
                     <SearchIcon />

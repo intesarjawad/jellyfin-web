@@ -62,11 +62,11 @@ export function useHomeData(): HomeData {
 
     const mediaLibraries = (userViewsResponse?.Items ?? []).filter(
         library =>
-            library.Id != null &&
-            library.Name != null &&
+            library.Id != null
+            && library.Name != null
             // Exclude channel-type folders (LiveTV, Channels) from the recent rows
-            library.CollectionType !== 'livetv' &&
-            library.CollectionType !== 'boxsets'
+            && library.CollectionType !== 'livetv'
+            && library.CollectionType !== 'boxsets'
     );
 
     // -----------------------------------------------------------------------
@@ -157,10 +157,10 @@ export function useHomeData(): HomeData {
         .filter((group): group is RecentLibraryGroup => group != null && group.items.length > 0);
 
     const isLoading =
-        isLoadingViews ||
-        isLoadingHero ||
-        isLoadingContinueWatching ||
-        isLoadingRecentlyAdded;
+        isLoadingViews
+        || isLoadingHero
+        || isLoadingContinueWatching
+        || isLoadingRecentlyAdded;
 
     return {
         heroItems: heroQueryData ?? [],

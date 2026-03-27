@@ -82,18 +82,18 @@ export function useInteractionAura(
                         1 - distanceFromCenter / AURA_ACTIVATION_DISTANCE_PX;
 
                     const targetDisplacementX =
-                        (rawDeltaX / AURA_ACTIVATION_DISTANCE_PX) *
-                        AURA_MAX_DISPLACEMENT_PX;
+                        (rawDeltaX / AURA_ACTIVATION_DISTANCE_PX)
+                        * AURA_MAX_DISPLACEMENT_PX;
                     const targetDisplacementY =
-                        (rawDeltaY / AURA_ACTIVATION_DISTANCE_PX) *
-                        AURA_MAX_DISPLACEMENT_PX;
+                        (rawDeltaY / AURA_ACTIVATION_DISTANCE_PX)
+                        * AURA_MAX_DISPLACEMENT_PX;
                     const targetGlowOpacity =
                         influence * AURA_GLOW_OPACITY_MAX;
 
                     // Lerp toward target rather than snapping — smoother entry.
-                    state.currentDisplacementX +=
-                        (targetDisplacementX - state.currentDisplacementX) *
-                        (1 - AURA_FRICTION);
+                    state.currentDisplacementX
+                        += (targetDisplacementX - state.currentDisplacementX)
+                        * (1 - AURA_FRICTION);
                     state.currentDisplacementY +=
                         (targetDisplacementY - state.currentDisplacementY) *
                         (1 - AURA_FRICTION);
