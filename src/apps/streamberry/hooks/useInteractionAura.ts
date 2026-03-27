@@ -4,7 +4,7 @@ import {
     AURA_ACTIVATION_DISTANCE_PX,
     AURA_FRICTION,
     AURA_GLOW_OPACITY_MAX,
-    AURA_MAX_DISPLACEMENT_PX,
+    AURA_MAX_DISPLACEMENT_PX
 } from '../utils/constants';
 
 /**
@@ -25,7 +25,7 @@ function getOrCreateAuraState(card: HTMLElement): CardAuraState {
         state = {
             currentDisplacementX: 0,
             currentDisplacementY: 0,
-            currentGlowOpacity: 0,
+            currentGlowOpacity: 0
         };
         cardAuraStates.set(card, state);
     }

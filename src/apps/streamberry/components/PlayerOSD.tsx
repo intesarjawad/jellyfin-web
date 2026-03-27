@@ -728,6 +728,10 @@ const PlayerOSD: FC<Readonly<PlayerOSDProps>> = ({ onBack }) => {
                     className='sb-osd__progress'
                     role='slider'
                     aria-label='Playback position'
+                    aria-valuenow={0}
+                    aria-valuemin={0}
+                    aria-valuemax={100}
+                    tabIndex={0}
                     onMouseDown={handleProgressMouseDown}
                     onMouseMove={handleProgressMouseMove}
                     onTouchStart={handleProgressTouchStart}

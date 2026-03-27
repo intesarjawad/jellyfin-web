@@ -5,7 +5,7 @@ import {
     CARD_STAGGER_DELAY_MS,
     HERO_CROSSFADE_DURATION_MS,
     MAX_STAGGER_CARDS,
-    TAB_TRANSITION_DURATION_MS,
+    TAB_TRANSITION_DURATION_MS
 } from '../utils/constants';
 
 const DEFAULT_EASING = 'cubic-bezier(0.16, 1, 0.3, 1)';
@@ -53,7 +53,7 @@ export function useFlipTransition() {
     function captureFirst(element: HTMLElement): void {
         snapshotRef.current = {
             rect: element.getBoundingClientRect(),
-            opacity: readComputedOpacity(element),
+            opacity: readComputedOpacity(element)
         };
     }
 
@@ -80,17 +80,17 @@ export function useFlipTransition() {
             [
                 {
                     transform: `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`,
-                    opacity: snapshot.opacity,
+                    opacity: snapshot.opacity
                 },
                 {
                     transform: 'translate(0, 0) scale(1, 1)',
-                    opacity: readComputedOpacity(element),
-                },
+                    opacity: readComputedOpacity(element)
+                }
             ],
             {
                 duration: options.durationMs,
                 easing,
-                fill: 'none',
+                fill: 'none'
             }
         );
 
@@ -111,13 +111,13 @@ export function useFlipTransition() {
         outElement.animate([{ opacity: 1 }, { opacity: 0 }], {
             duration: durationMs,
             easing,
-            fill: 'forwards',
+            fill: 'forwards'
         });
 
         inElement.animate([{ opacity: 0 }, { opacity: 1 }], {
             duration: durationMs,
             easing,
-            fill: 'forwards',
+            fill: 'forwards'
         });
     }
 
@@ -136,13 +136,13 @@ export function useFlipTransition() {
             card.animate(
                 [
                     { opacity: 0, transform: 'scale(0.95)' },
-                    { opacity: 1, transform: 'scale(1)' },
+                    { opacity: 1, transform: 'scale(1)' }
                 ],
                 {
                     duration: TAB_TRANSITION_DURATION_MS,
                     easing: DEFAULT_EASING,
                     delay: cardIndex * delayPerCardMs,
-                    fill: 'both',
+                    fill: 'both'
                 }
             );
         });
@@ -157,7 +157,7 @@ export function useFlipTransition() {
         durations: {
             cardMorph: CARD_MORPH_DURATION_MS,
             heroCrossfade: HERO_CROSSFADE_DURATION_MS,
-            tabTransition: TAB_TRANSITION_DURATION_MS,
-        },
+            tabTransition: TAB_TRANSITION_DURATION_MS
+        }
     };
 }
