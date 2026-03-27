@@ -249,7 +249,6 @@ const PlayerOSD: FC<Readonly<PlayerOSDProps>> = ({ onBack }) => {
                 progressHandleRef.current.style.left = `${fraction * 100}%`;
             }
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const handleProgressMouseDown = useCallback((e: MouseEvent<HTMLDivElement>) => {
@@ -289,7 +288,6 @@ const PlayerOSD: FC<Readonly<PlayerOSDProps>> = ({ onBack }) => {
         if (progressHandleRef.current) {
             progressHandleRef.current.style.left = `${fraction * 100}%`;
         }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     // ---------------------------------------------------------------------------

@@ -79,7 +79,7 @@ function LibraryCard({ item, variant }: Readonly<LibraryCardProps>) {
     const navigate = useNavigate();
 
     const imageType = variant === 'poster' ? 'Primary' : 'Thumb';
-    const imageUrl = useItemImageUrl(item.Id ?? '', imageType);
+    const imageUrl = useItemImageUrl(item, imageType);
 
     const watchProgress =
         item.UserData?.PlayedPercentage != null ?

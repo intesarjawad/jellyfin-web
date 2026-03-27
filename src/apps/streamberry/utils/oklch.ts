@@ -56,16 +56,16 @@ export const OKLCH_SEMANTIC_FALLBACK: OklchColor = {
 
 function linearizeChannel(channelValue: number): number {
     // Decode sRGB gamma: converts 0–1 sRGB to linear light
-    return channelValue <= 0.04045
-        ? channelValue / 12.92
-        : Math.pow((channelValue + 0.055) / 1.055, 2.4);
+    return channelValue <= 0.04045 ?
+        channelValue / 12.92 :
+        Math.pow((channelValue + 0.055) / 1.055, 2.4);
 }
 
 function gammaEncodeChannel(linearValue: number): number {
     // Encode sRGB gamma: converts linear light to 0–1 sRGB
-    return linearValue <= 0.0031308
-        ? linearValue * 12.92
-        : 1.055 * Math.pow(linearValue, 1.0 / 2.4) - 0.055;
+    return linearValue <= 0.0031308 ?
+        linearValue * 12.92 :
+        1.055 * Math.pow(linearValue, 1.0 / 2.4) - 0.055;
 }
 
 // -- RGB ↔ OKLab (Björn Ottosson matrices) ------------------------------------

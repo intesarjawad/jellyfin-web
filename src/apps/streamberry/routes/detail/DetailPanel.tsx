@@ -50,16 +50,19 @@ export function DetailPanel({ item, onFavoriteToggle, isFavorite }: Readonly<Det
 
     const overviewIsTruncatable =
         overview != null && overview.length > OVERVIEW_COLLAPSE_LENGTH;
-    const displayedOverview =
-        overview == null ? null :
-        overviewIsTruncatable && !overviewExpanded ?
-            `${overview.slice(0, OVERVIEW_COLLAPSE_LENGTH).trimEnd()}…` :
-            overview;
+    let displayedOverview: string | null;
+    if (overview == null) {
+        displayedOverview = null;
+    } else if (overviewIsTruncatable && !overviewExpanded) {
+        displayedOverview = `${overview.slice(0, OVERVIEW_COLLAPSE_LENGTH).trimEnd()}…`;
+    } else {
+        displayedOverview = overview;
+    }
 
-    const posterUrl = useItemImageUrl(itemId, 'Primary', { maxWidth: 400 });
+    const posterUrl = useItemImageUrl(item, 'Primary', { maxWidth: 400 });
 
     const handlePlayClick = useCallback(() => {
-        playbackManager.play({ items: [item] });
+        void playbackManager.play({ items: [item] });
     }, [item]);
 
     const handleTrailerClick = useCallback(() => {

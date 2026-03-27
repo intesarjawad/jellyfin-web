@@ -48,8 +48,8 @@ function SpotlightCard({ item }: Readonly<SpotlightCardProps>) {
     const releaseYear = item.ProductionYear ?? null;
     const contentRating = item.OfficialRating ?? null;
 
-    const backdropUrl = useItemImageUrl(itemId, 'Backdrop', { maxWidth: 600 });
-    const primaryUrl = useItemImageUrl(itemId, 'Primary', { maxWidth: 600 });
+    const backdropUrl = useItemImageUrl(item, 'Backdrop', { maxWidth: 600 });
+    const primaryUrl = useItemImageUrl(item, 'Primary', { maxWidth: 600 });
     const displayImageUrl = backdropUrl ?? primaryUrl;
 
     const handleClick = useCallback(() => {

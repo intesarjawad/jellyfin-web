@@ -1,9 +1,10 @@
 import React from 'react';
 
 import { useItemImageUrl } from '../../hooks/useItemImageUrl';
+import type { ItemDto } from 'types/base/models/item-dto';
 
 interface DetailBackdropProps {
-    itemId: string;
+    item: ItemDto;
 }
 
 /**
@@ -14,8 +15,8 @@ interface DetailBackdropProps {
  * returns a 404 and the browser shows nothing — the gradient overlay still
  * renders, giving the glass panel something to sit against.
  */
-export function DetailBackdrop({ itemId }: Readonly<DetailBackdropProps>) {
-    const backdropUrl = useItemImageUrl(itemId, 'Backdrop', { maxWidth: 1920 });
+export function DetailBackdrop({ item }: Readonly<DetailBackdropProps>) {
+    const backdropUrl = useItemImageUrl(item, 'Backdrop', { maxWidth: 1920 });
 
     return (
         <div className='sb-detail__backdrop' aria-hidden='true'>

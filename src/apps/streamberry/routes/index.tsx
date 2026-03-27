@@ -1,12 +1,18 @@
 import React from 'react';
 import { Navigate, type RouteObject } from 'react-router-dom';
 
+import { toAsyncPageRoute, type AsyncRoute } from 'components/router/AsyncRoute';
 import ConnectionRequired from 'components/ConnectionRequired';
 import ErrorBoundary from 'components/router/ErrorBoundary';
 import FallbackRoute from 'components/router/FallbackRoute';
 import { toViewManagerPageRoute } from 'components/router/LegacyRoute';
 
-import { LEGACY_USER_ROUTES } from './legacyRoutes';
+import { LEGACY_PUBLIC_ROUTES, LEGACY_USER_ROUTES } from './legacyRoutes';
+
+const ASYNC_USER_ROUTES: AsyncRoute[] = [
+    { path: 'mypreferencesmenu', page: 'user/settings' },
+    { path: 'quickconnect', page: 'quickConnect' }
+];
 
 // All seven library routes share the same LibraryPage component. The component
 // reads the route path from location.pathname to determine which collection
@@ -18,12 +24,12 @@ const lazySearchPage = () => import('./search/index');
 const lazyVideoPage = () => import('./video');
 
 const LIBRARY_ROUTES: RouteObject[] = [
-    { path: 'movies',      lazy: lazyLibraryPage },
-    { path: 'tv',          lazy: lazyLibraryPage },
-    { path: 'music',       lazy: lazyLibraryPage },
-    { path: 'livetv',      lazy: lazyLibraryPage },
-    { path: 'homevideos',  lazy: lazyLibraryPage },
-    { path: 'books',       lazy: lazyLibraryPage },
+    { path: 'movies', lazy: lazyLibraryPage },
+    { path: 'tv', lazy: lazyLibraryPage },
+    { path: 'music', lazy: lazyLibraryPage },
+    { path: 'livetv', lazy: lazyLibraryPage },
+    { path: 'homevideos', lazy: lazyLibraryPage },
+    { path: 'books', lazy: lazyLibraryPage },
     { path: 'musicvideos', lazy: lazyLibraryPage }
 ];
 
@@ -74,6 +80,9 @@ export const STREAMBERRY_APP_ROUTES: RouteObject[] = [
                     },
                     // Video player — real implementation
                     { path: 'video', lazy: lazyVideoPage },
+                    // Async React pages from stable app
+                    ...ASYNC_USER_ROUTES.map(toAsyncPageRoute),
+                    // Legacy ViewManagerPage routes
                     ...LEGACY_USER_ROUTES.map(toViewManagerPageRoute)
                 ],
                 ErrorBoundary
@@ -82,6 +91,7 @@ export const STREAMBERRY_APP_ROUTES: RouteObject[] = [
             {
                 element: <ConnectionRequired level='public' />,
                 children: [
+                    ...LEGACY_PUBLIC_ROUTES.map(toViewManagerPageRoute),
                     { path: '*', Component: FallbackRoute }
                 ]
             }

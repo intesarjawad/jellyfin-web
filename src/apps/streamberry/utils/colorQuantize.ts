@@ -41,17 +41,15 @@ function loadDownscaledPixelData(imageUrl: string): Promise<ImageData> {
         image.crossOrigin = 'anonymous';
 
         image.onload = () => {
-            let canvas: HTMLCanvasElement | OffscreenCanvas;
             let context: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D;
 
             if (typeof OffscreenCanvas !== 'undefined') {
-                canvas = new OffscreenCanvas(QUANTIZE_CANVAS_SIZE, QUANTIZE_CANVAS_SIZE);
-                context = canvas.getContext('2d', { willReadFrequently: true }) as OffscreenCanvasRenderingContext2D;
+                const offscreenCanvas = new OffscreenCanvas(QUANTIZE_CANVAS_SIZE, QUANTIZE_CANVAS_SIZE);
+                context = offscreenCanvas.getContext('2d', { willReadFrequently: true }) as OffscreenCanvasRenderingContext2D;
             } else {
                 const htmlCanvas = document.createElement('canvas');
                 htmlCanvas.width = QUANTIZE_CANVAS_SIZE;
                 htmlCanvas.height = QUANTIZE_CANVAS_SIZE;
-                canvas = htmlCanvas;
                 context = htmlCanvas.getContext('2d', { willReadFrequently: true }) as CanvasRenderingContext2D;
             }
 
@@ -100,29 +98,34 @@ function extractSignificantPixels(imageData: ImageData): PixelTriplet[] {
 // -- Median cut ---------------------------------------------------------------
 
 /**
+ * Computes the min/max value range for one channel across all pixels.
+ * @param pixels - The pixel set to scan
+ * @param channelIndex - Channel index: 0 = red, 1 = green, 2 = blue
+ */
+function computeChannelRange(pixels: PixelTriplet[], channelIndex: ColorChannel): number {
+    let channelMin = 255;
+    let channelMax = 0;
+
+    for (const pixel of pixels) {
+        const channelValue = pixel[channelIndex];
+        if (channelValue < channelMin) channelMin = channelValue;
+        if (channelValue > channelMax) channelMax = channelValue;
+    }
+
+    return channelMax - channelMin;
+}
+
+/**
  * Identifies which color channel has the widest value range in a pixel set.
  * The widest-range channel is the best axis to split on.
  */
 function findWidestChannel(pixels: PixelTriplet[]): ColorChannel {
-    let redMin = 255, redMax = 0;
-    let greenMin = 255, greenMax = 0;
-    let blueMin = 255, blueMax = 0;
-
-    for (const pixel of pixels) {
-        if (pixel[0] < redMin) redMin = pixel[0];
-        if (pixel[0] > redMax) redMax = pixel[0];
-        if (pixel[1] < greenMin) greenMin = pixel[1];
-        if (pixel[1] > greenMax) greenMax = pixel[1];
-        if (pixel[2] < blueMin) blueMin = pixel[2];
-        if (pixel[2] > blueMax) blueMax = pixel[2];
-    }
-
-    const redRange = redMax - redMin;
-    const greenRange = greenMax - greenMin;
-    const blueRange = blueMax - blueMin;
+    const redRange = computeChannelRange(pixels, 0);
+    const greenRange = computeChannelRange(pixels, 1);
+    const blueRange = computeChannelRange(pixels, 2);
 
     if (redRange >= greenRange && redRange >= blueRange) return 0;
-    if (greenRange >= redRange && greenRange >= blueRange) return 1;
+    if (greenRange >= blueRange) return 1;
     return 2;
 }
 
@@ -134,7 +137,9 @@ function computeBucketAverage(pixels: PixelTriplet[]): QuantizedColor {
         return { r: 0, g: 0, b: 0, population: 0 };
     }
 
-    let redSum = 0, greenSum = 0, blueSum = 0;
+    let redSum = 0;
+    let greenSum = 0;
+    let blueSum = 0;
     for (const pixel of pixels) {
         redSum += pixel[0];
         greenSum += pixel[1];
@@ -151,8 +156,39 @@ function computeBucketAverage(pixels: PixelTriplet[]): QuantizedColor {
 }
 
 /**
- * Recursively splits pixel buckets along the widest color channel until
- * the target bucket count is reached.
+ * Returns the index of the largest bucket in the list.
+ * The largest bucket has the most pixels and therefore the most color variance
+ * to split on.
+ */
+function findLargestBucketIndex(buckets: PixelTriplet[][]): number {
+    let largestIndex = 0;
+    let largestSize = 0;
+
+    for (let bucketIndex = 0; bucketIndex < buckets.length; bucketIndex++) {
+        if (buckets[bucketIndex].length > largestSize) {
+            largestSize = buckets[bucketIndex].length;
+            largestIndex = bucketIndex;
+        }
+    }
+
+    return largestIndex;
+}
+
+/**
+ * Splits a pixel bucket at its median along the widest color channel.
+ * Returns the two halves as a tuple [lower, upper].
+ */
+function splitBucketAtMedian(bucket: PixelTriplet[]): [PixelTriplet[], PixelTriplet[]] {
+    const splitChannel = findWidestChannel(bucket);
+    bucket.sort((pixelA, pixelB) => pixelA[splitChannel] - pixelB[splitChannel]);
+
+    const medianIndex = Math.floor(bucket.length / 2);
+    return [bucket.slice(0, medianIndex), bucket.slice(medianIndex)];
+}
+
+/**
+ * Splits pixel buckets along the widest color channel until the target
+ * bucket count is reached.
  *
  * Returns colors ordered by population (most dominant first), filtered
  * to remove statistically insignificant clusters.
@@ -163,27 +199,12 @@ function medianCutQuantize(pixels: PixelTriplet[], targetBucketCount: number): Q
     const buckets: PixelTriplet[][] = [pixels];
 
     while (buckets.length < targetBucketCount) {
-        // Always split the largest bucket — it contains the most color variance
-        let largestBucketIndex = 0;
-        let largestBucketSize = 0;
-
-        for (let bucketIndex = 0; bucketIndex < buckets.length; bucketIndex++) {
-            if (buckets[bucketIndex].length > largestBucketSize) {
-                largestBucketSize = buckets[bucketIndex].length;
-                largestBucketIndex = bucketIndex;
-            }
-        }
-
+        const largestBucketIndex = findLargestBucketIndex(buckets);
         const bucketToSplit = buckets[largestBucketIndex];
+
         if (bucketToSplit.length <= 1) break;
 
-        const splitChannel = findWidestChannel(bucketToSplit);
-        bucketToSplit.sort((pixelA, pixelB) => pixelA[splitChannel] - pixelB[splitChannel]);
-
-        const medianIndex = Math.floor(bucketToSplit.length / 2);
-        const lowerHalf = bucketToSplit.slice(0, medianIndex);
-        const upperHalf = bucketToSplit.slice(medianIndex);
-
+        const [lowerHalf, upperHalf] = splitBucketAtMedian(bucketToSplit);
         buckets.splice(largestBucketIndex, 1, lowerHalf, upperHalf);
     }
 

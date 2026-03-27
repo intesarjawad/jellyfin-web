@@ -1,13 +1,12 @@
 import React, { useCallback, useState } from 'react';
 
-import { useApi } from 'hooks/useApi';
+import { useApi, type JellyfinApiContext } from 'hooks/useApi';
 import { useQuery } from '@tanstack/react-query';
 import { getTvShowsApi } from '@jellyfin/sdk/lib/utils/api/tv-shows-api';
 import { ItemFields } from '@jellyfin/sdk/lib/generated-client/models/item-fields';
 import { GlassPanel } from '../../components/GlassPanel';
 import { useItemImageUrl } from '../../hooks/useItemImageUrl';
 import type { ItemDto } from 'types/base/models/item-dto';
-import type { JellyfinApiContext } from 'hooks/useApi';
 import type { AxiosRequestConfig } from 'axios';
 
 interface SeasonBrowserProps {
@@ -207,7 +206,6 @@ interface EpisodeCardProps {
 }
 
 function EpisodeCard({ episode }: Readonly<EpisodeCardProps>) {
-    const episodeId = episode.Id ?? '';
     const episodeName = episode.Name ?? 'Untitled';
     const episodeNumber = episode.IndexNumber ?? null;
     const seasonNumber = episode.ParentIndexNumber ?? null;
@@ -217,14 +215,16 @@ function EpisodeCard({ episode }: Readonly<EpisodeCardProps>) {
         null;
 
     const watchProgress = resolveWatchProgress(episode);
-    const thumbnailUrl = useItemImageUrl(episodeId, 'Thumb', { maxWidth: 400 });
+    const thumbnailUrl = useItemImageUrl(episode, 'Thumb', { maxWidth: 400 });
 
-    const episodeLabel =
-        seasonNumber != null && episodeNumber != null ?
-            `S${seasonNumber} E${episodeNumber}` :
-            episodeNumber != null ?
-            `E${episodeNumber}` :
-            null;
+    let episodeLabel: string | null;
+    if (seasonNumber != null && episodeNumber != null) {
+        episodeLabel = `S${seasonNumber} E${episodeNumber}`;
+    } else if (episodeNumber != null) {
+        episodeLabel = `E${episodeNumber}`;
+    } else {
+        episodeLabel = null;
+    }
 
     const truncatedOverview =
         overview != null && overview.length > EPISODE_OVERVIEW_LENGTH ?
@@ -294,10 +294,10 @@ function resolveWatchProgress(episode: ItemDto): number | null {
     const runtimeTicks = episode.RunTimeTicks;
 
     if (
-        playbackPositionTicks == null ||
-        runtimeTicks == null ||
-        runtimeTicks === 0 ||
-        playbackPositionTicks === 0
+        playbackPositionTicks == null
+        || runtimeTicks == null
+        || runtimeTicks === 0
+        || playbackPositionTicks === 0
     ) {
         return null;
     }

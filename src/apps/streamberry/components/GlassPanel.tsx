@@ -19,7 +19,7 @@ interface GlassPanelProps {
     children: ReactNode;
     className?: string;
     elevation?: GlassElevation;
-    as?: keyof JSX.IntrinsicElements;
+    as?: keyof React.JSX.IntrinsicElements;
 }
 
 /**

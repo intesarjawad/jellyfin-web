@@ -6,7 +6,7 @@ import { getLibraryApi } from '@jellyfin/sdk/lib/utils/api/library-api';
 import { getUserLibraryApi } from '@jellyfin/sdk/lib/utils/api/user-library-api';
 import { ItemFields } from '@jellyfin/sdk/lib/generated-client/models/item-fields';
 
-import { useApi } from 'hooks/useApi';
+import { useApi, type JellyfinApiContext } from 'hooks/useApi';
 import { useToggleFavoriteMutation } from 'hooks/useFetchItems';
 import { useSceneColors } from '../../hooks/useSceneColors';
 import { useItemImageUrl } from '../../hooks/useItemImageUrl';
@@ -15,7 +15,6 @@ import { DetailBackdrop } from './DetailBackdrop';
 import { DetailPanel } from './DetailPanel';
 import { SeasonBrowser } from './SeasonBrowser';
 import type { ItemDto } from 'types/base/models/item-dto';
-import type { JellyfinApiContext } from 'hooks/useApi';
 import type { AxiosRequestConfig } from 'axios';
 
 const SIMILAR_ITEMS_LIMIT = 12;
@@ -103,7 +102,7 @@ export default function DetailPage() {
     const { mutate: toggleFavorite } = useToggleFavoriteMutation();
 
     const resolvedItemId = item?.Id ?? itemId ?? '';
-    const backdropUrl = useItemImageUrl(resolvedItemId, 'Backdrop');
+    const backdropUrl = useItemImageUrl(item, 'Backdrop');
     useSceneColors(backdropUrl, resolvedItemId);
 
     const handleFavoriteToggle = useCallback(() => {
@@ -131,7 +130,7 @@ export default function DetailPage() {
 
     return (
         <div className='sb-detail'>
-            <DetailBackdrop itemId={resolvedItemId} />
+            <DetailBackdrop item={item} />
 
             <div className='sb-detail__content'>
                 <DetailPanel
@@ -191,7 +190,7 @@ function SimilarItemCard({ item }: Readonly<SimilarItemCardProps>) {
     const navigate = useNavigate();
     const itemId = item.Id ?? '';
     const itemName = item.Name ?? 'Unknown';
-    const imageUrl = useItemImageUrl(itemId, 'Primary');
+    const imageUrl = useItemImageUrl(item, 'Primary');
 
     const handleClick = useCallback(() => {
         if (itemId) {

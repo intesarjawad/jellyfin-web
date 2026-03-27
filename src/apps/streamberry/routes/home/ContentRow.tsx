@@ -55,7 +55,7 @@ function ContentRowCard({ item, variant }: Readonly<ContentRowCardProps>) {
 
     // Landscape cards prefer Backdrop → fall back to Thumb; poster cards use Primary
     const imageType = variant === 'landscape' ? 'Backdrop' : 'Primary';
-    const imageUrl = useItemImageUrl(itemId, imageType);
+    const imageUrl = useItemImageUrl(item, imageType);
 
     const watchProgress = resolveWatchProgress(item);
     const releaseYear = item.ProductionYear ?? undefined;
@@ -95,10 +95,10 @@ function resolveWatchProgress(item: ItemDto): number | undefined {
     const runtimeTicks = item.RunTimeTicks;
 
     if (
-        playbackPositionTicks == null ||
-        runtimeTicks == null ||
-        runtimeTicks === 0 ||
-        playbackPositionTicks === 0
+        playbackPositionTicks == null
+        || runtimeTicks == null
+        || runtimeTicks === 0
+        || playbackPositionTicks === 0
     ) {
         return undefined;
     }

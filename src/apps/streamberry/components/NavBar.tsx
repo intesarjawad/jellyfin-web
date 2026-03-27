@@ -70,7 +70,7 @@ const NavBar = () => {
     }, [navigate]);
 
     const handleProfileClick = useCallback(() => {
-        navigate('/mypreferencesmenu.html');
+        navigate('/mypreferencesmenu');
     }, [navigate]);
 
     const handleLibraryClick = useCallback((e: React.MouseEvent<HTMLAnchorElement>) => {

@@ -1,6 +1,6 @@
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client/models/base-item-dto';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 
 import { Card } from '../../components/Card';
 import { GlassPanel } from '../../components/GlassPanel';
@@ -62,7 +62,7 @@ function SearchCard({ item }: Readonly<SearchCardProps>) {
     const imageType = isPosterType ? 'Primary' : 'Backdrop';
     const cardVariant = isPosterType ? 'poster' : 'landscape';
 
-    const imageUrl = useItemImageUrl(itemId, imageType, { maxWidth: 300 });
+    const imageUrl = useItemImageUrl(item, imageType, { maxWidth: 300 });
 
     const releaseYear = item.ProductionYear ?? undefined;
     const contentRating = item.OfficialRating ?? undefined;
@@ -126,8 +126,9 @@ function SearchResultGroup({ typeName, items }: Readonly<SearchResultGroupProps>
  */
 export function Component() {
     const navigate = useNavigate();
+    const [searchParams] = useSearchParams();
     const inputRef = useRef<HTMLInputElement>(null);
-    const [queryText, setQueryText] = useState('');
+    const [queryText, setQueryText] = useState(searchParams.get('q') ?? '');
 
     const { resultGroups, isSearching, totalResults } = useSearch(queryText);
     const hasQuery = queryText.trim().length >= 2;

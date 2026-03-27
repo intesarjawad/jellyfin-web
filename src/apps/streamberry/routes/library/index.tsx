@@ -5,17 +5,14 @@ import { BaseItemKind } from '@jellyfin/sdk/lib/generated-client/models/base-ite
 import { ImageType } from '@jellyfin/sdk/lib/generated-client/models/image-type';
 import { ItemSortBy } from '@jellyfin/sdk/lib/generated-client/models/item-sort-by';
 import { SortOrder } from '@jellyfin/sdk/lib/generated-client/models/sort-order';
-import { ViewMode } from 'types/library';
-import type { LibraryViewSettings } from 'types/library';
+import { ViewMode, type LibraryViewSettings } from 'types/library';
 import { LibraryTab } from 'types/libraryTab';
 
 import { useGetItemsViewByType } from 'hooks/useFetchItems';
 import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client';
 
-import { FilterBar } from './FilterBar';
-import { LibraryGrid } from './LibraryGrid';
-import type { LibraryViewType } from './FilterBar';
-import type { CardVariant } from './LibraryGrid';
+import { FilterBar, type LibraryViewType } from './FilterBar';
+import { LibraryGrid, type CardVariant } from './LibraryGrid';
 
 // ---------------------------------------------------------------------------
 // Route path → LibraryTab mapping
@@ -94,9 +91,9 @@ function isLibraryRoutePath(path: string): path is LibraryRoutePath {
 
 // URL search param key names — centralised so a typo can't silently break
 // persistence across the page components.
-const PARAM_SORT_BY    = 'sortBy';
+const PARAM_SORT_BY = 'sortBy';
 const PARAM_SORT_ORDER = 'sortOrder';
-const PARAM_VIEW_TYPE  = 'viewType';
+const PARAM_VIEW_TYPE = 'viewType';
 
 /**
  * Streamberry library page — renders movies, TV shows, music, and other

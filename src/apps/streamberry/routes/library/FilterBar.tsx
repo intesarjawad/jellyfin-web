@@ -25,11 +25,11 @@ interface SortOption {
  * order they appear in the dropdown — most commonly used first.
  */
 const SORT_OPTIONS: SortOption[] = [
-    { label: 'Name',         value: ItemSortBy.SortName },
-    { label: 'Date Added',   value: ItemSortBy.DateCreated },
+    { label: 'Name', value: ItemSortBy.SortName },
+    { label: 'Date Added', value: ItemSortBy.DateCreated },
     { label: 'Release Date', value: ItemSortBy.PremiereDate },
-    { label: 'Rating',       value: ItemSortBy.CommunityRating },
-    { label: 'Runtime',      value: ItemSortBy.Runtime }
+    { label: 'Rating', value: ItemSortBy.CommunityRating },
+    { label: 'Runtime', value: ItemSortBy.Runtime }
 ];
 
 /**

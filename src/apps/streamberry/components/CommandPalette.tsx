@@ -2,6 +2,7 @@ import type { BaseItemDto } from '@jellyfin/sdk/lib/generated-client/models/base
 import React, {
     useCallback,
     useEffect,
+    useMemo,
     useRef,
     useState,
     type KeyboardEvent
@@ -71,7 +72,7 @@ function PaletteResultRow({ item, isHighlighted, onSelect }: Readonly<PaletteRes
     const typeLabel = TYPE_DISPLAY_LABELS[typeName] ?? typeName;
     const releaseYear = item.ProductionYear;
 
-    const imageUrl = useItemImageUrl(itemId, 'Primary', { maxWidth: 60 });
+    const imageUrl = useItemImageUrl(item, 'Primary', { maxWidth: 60 });
 
     const handleClick = useCallback(() => onSelect(item), [item, onSelect]);
 
@@ -156,7 +157,10 @@ export function CommandPalette() {
     const { resultGroups, isSearching, totalResults } = useSearch(queryText);
     const hasQuery = queryText.trim().length >= 2;
     const orderedKeys = sortedTypeKeys(resultGroups);
-    const flatResults = hasQuery ? flattenResultsInOrder(resultGroups, orderedKeys) : [];
+    const flatResults = useMemo(
+        () => (hasQuery ? flattenResultsInOrder(resultGroups, orderedKeys) : []),
+        [hasQuery, resultGroups, orderedKeys]
+    );
 
     // Reset state when the palette opens
     useEffect(() => {
@@ -257,7 +261,6 @@ export function CommandPalette() {
                 role='dialog'
                 aria-modal='true'
                 aria-label='Search'
-                onKeyDown={handleKeyDown}
             >
                 {/* Input */}
                 <div className='sb-command__input-row'>

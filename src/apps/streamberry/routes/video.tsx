@@ -1,8 +1,8 @@
-import React, { useRef, useEffect, type FC } from 'react';
+import React, { useCallback, useRef, useEffect, type FC } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import ViewManagerPage from 'components/viewManager/ViewManagerPage';
-import Events, { type Event } from 'utils/events';
+import Events from 'utils/events';
 import { EventType } from 'constants/eventType';
 
 import PlayerOSD from '../components/PlayerOSD';
@@ -30,7 +30,7 @@ const StreamberryVideoPage: FC = () => {
         // The legacy controller fires SHOW_VIDEO_OSD(true/false) when it wants
         // to surface or suppress its own OSD chrome. We subscribe but don't
         // act on it — the Streamberry OSD is self-managing.
-        const onLegacyOsdVisibilityChange = (_e: Event, _isShowing: boolean) => {
+        const onLegacyOsdVisibilityChange = () => {
             // Intentionally empty: Streamberry OSD owns visibility decisions.
         };
 
@@ -41,9 +41,9 @@ const StreamberryVideoPage: FC = () => {
         };
     }, []);
 
-    function handleBack() {
+    const handleBack = useCallback(() => {
         navigate(-1);
-    }
+    }, [navigate]);
 
     return (
         <>

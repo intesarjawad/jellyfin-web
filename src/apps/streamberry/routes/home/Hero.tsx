@@ -33,14 +33,14 @@ export function Hero({ items }: Readonly<HeroProps>) {
     const activeItemId = activeItem?.Id ?? '';
 
     // Scene colors are driven by the active item's backdrop image.
-    // Hooks must be called unconditionally; we pass the empty string when there's
-    // no active item and gate the scene update by passing null as the imageUrl.
-    const activeBackdropUrl = useItemImageUrl(activeItemId, 'Backdrop');
-    const activePrimaryUrl = useItemImageUrl(activeItemId, 'Primary');
+    // Hooks must be called unconditionally; we pass null when there's no active
+    // item and gate the scene update by passing null as the imageUrl.
+    const activeBackdropUrl = useItemImageUrl(activeItem, 'Backdrop');
+    const activePrimaryUrl = useItemImageUrl(activeItem, 'Primary');
 
-    // When activeItemId is empty (no items yet), both URL hooks return a
-    // technically valid but meaningless URL. Passing null keeps the scene system
-    // in its fallback state rather than triggering a failed extraction.
+    // When activeItem is null (no items yet), both URL hooks return null.
+    // Passing null keeps the scene system in its fallback state rather than
+    // triggering a failed extraction.
     const sceneImageUrl = activeItemId ? (activeBackdropUrl ?? activePrimaryUrl) : null;
 
     // Single scene controller for the entire hero — no risk of slide conflicts.
@@ -138,15 +138,14 @@ interface HeroSlideProps {
  * to avoid multiple hooks fighting over the active item.
  */
 function HeroSlide({ item, isActive, crossfadeDurationMs, onPlay, onMoreInfo }: Readonly<HeroSlideProps>) {
-    const itemId = item.Id ?? '';
     const itemName = item.Name ?? 'Unknown';
     const releaseYear = item.ProductionYear ?? null;
     const overview = item.Overview ?? null;
     const genres = item.Genres?.slice(0, 3) ?? [];
     const officialRating = item.OfficialRating ?? null;
 
-    const backdropUrl = useItemImageUrl(itemId, 'Backdrop', { maxWidth: 1440 });
-    const primaryUrl = useItemImageUrl(itemId, 'Primary');
+    const backdropUrl = useItemImageUrl(item, 'Backdrop', { maxWidth: 1440 });
+    const primaryUrl = useItemImageUrl(item, 'Primary');
     const displayImageUrl = backdropUrl ?? primaryUrl;
 
     const truncatedOverview =

@@ -94,12 +94,12 @@ export function useInteractionAura(
                     state.currentDisplacementX
                         += (targetDisplacementX - state.currentDisplacementX)
                         * (1 - AURA_FRICTION);
-                    state.currentDisplacementY +=
-                        (targetDisplacementY - state.currentDisplacementY) *
-                        (1 - AURA_FRICTION);
-                    state.currentGlowOpacity +=
-                        (targetGlowOpacity - state.currentGlowOpacity) *
-                        (1 - AURA_FRICTION);
+                    state.currentDisplacementY
+                        += (targetDisplacementY - state.currentDisplacementY)
+                        * (1 - AURA_FRICTION);
+                    state.currentGlowOpacity
+                        += (targetGlowOpacity - state.currentGlowOpacity)
+                        * (1 - AURA_FRICTION);
                 } else {
                     // Outside activation range — friction-decay back to rest.
                     state.currentDisplacementX *= AURA_FRICTION;
